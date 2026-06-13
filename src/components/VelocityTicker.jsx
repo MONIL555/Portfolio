@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 
 export default function VelocityTicker() {
-  const stackText = "JavaScript (ES6+) • Next.js • Tailwind CSS • Node.js • MongoDB • MySQL • Python • FastAPI • ";
+  const stackText = "JavaScript (ES6+) • Next.js • React.js • Redux • Tailwind CSS • Node.js • MongoDB • MySQL • Python • FastAPI • Express.js • ";
 
   return (
     <div className="w-full py-8 overflow-hidden bg-[#1A1A1A] text-[#FAF8F5] -rotate-3 scale-110 my-20 shadow-2xl">

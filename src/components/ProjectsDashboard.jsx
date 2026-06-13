@@ -25,10 +25,10 @@ function AnimatedMetric({ value, label, suffix = "", duration = 2 }) {
 
   return (
     <div ref={ref} className="mt-3 flex flex-col">
-      <span className="text-2xl md:text-3xl font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600 leading-none">
+      <span className="text-lg md:text-xl font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600 leading-none">
         {count}{suffix}
       </span>
-      <span className="text-[13px] md:text-sm text-gray-500 font-medium mt-1">{label}</span>
+      <span className="text-[10px] md:text-[11px] text-gray-500 font-medium mt-1">{label}</span>
     </div>
   );
 }
@@ -70,7 +70,7 @@ export default function ProjectsDashboard() {
       size: "md:col-span-1",
       metric: (
         <div className="mt-3">
-          <span className="text-[13px] md:text-sm text-gray-500 font-medium block mb-1">35+ Concurrent Users</span>
+          <span className="text-[10px] md:text-[11px] text-gray-500 font-medium block mb-1">35+ Concurrent Users</span>
           <AnimatedGraph />
         </div>
       ),
@@ -102,8 +102,8 @@ export default function ProjectsDashboard() {
   return (
     <section id="projects" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full">
       <div className="mb-6 mt-8 md:mt-0">
-        <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Projects Dashboard</h2>
-        <p className="text-gray-600 text-[15px] md:text-base">Selected works and applications.</p>
+        <h2 className="text-lg md:text-xl font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Projects Dashboard</h2>
+        <p className="text-gray-600 text-xs md:text-[13px]">Selected works and applications.</p>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -111,14 +111,14 @@ export default function ProjectsDashboard() {
           <div key={i} className={`glass-panel rounded-3xl p-6 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size}`}>
             <div>
               <div className="flex justify-between items-start mb-1">
-                <h3 className="text-xl md:text-2xl font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">{project.title}</h3>
+                <h3 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">{project.title}</h3>
                 <div className="p-1.5 bg-white/40 rounded-full group-hover:bg-black group-hover:text-white transition-colors">
                   <ExternalLink size={18} />
                 </div>
               </div>
               {project.metric}
               
-              <ul className="mt-4 space-y-2 text-gray-600 text-[15px] md:text-base leading-relaxed">
+              <ul className="mt-4 space-y-2 text-gray-600 text-xs md:text-[13px] leading-relaxed">
                 {project.description.map((desc, index) => (
                   <li key={index} className="flex items-start gap-2.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-black/40 mt-2 flex-shrink-0"></span>
@@ -130,7 +130,7 @@ export default function ProjectsDashboard() {
             
             <div className="flex flex-wrap gap-2 mt-5">
               {project.tags.map((tag, j) => (
-                <span key={j} className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+                <span key={j} className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
                   {tag}
                 </span>
               ))}

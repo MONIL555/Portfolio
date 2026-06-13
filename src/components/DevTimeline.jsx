@@ -212,16 +212,16 @@ function TimelineCard({ index, progress, data, count }) {
       <div className="w-full h-full glass-panel rounded-3xl p-8 flex flex-col justify-between shadow-sm">
         <div>
           <div className="flex justify-between items-start mb-2">
-            <span className="font-[family-name:var(--font-space-grotesk)] text-sm font-bold tracking-widest uppercase text-gray-500">
+            <span className="font-[family-name:var(--font-space-grotesk)] text-[10px] md:text-[11px] font-bold tracking-widest uppercase text-gray-500">
               Phase {data.phase}
             </span>
           </div>
 
-          <h3 className="text-xl md:text-2xl font-bold font-[family-name:var(--font-space-grotesk)] leading-tight mb-4 text-gray-900">
+          <h3 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] leading-tight mb-4 text-gray-900">
             {data.title}
           </h3>
 
-          <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+          <p className="text-gray-600 text-xs md:text-[13px] leading-relaxed">
             {data.desc}
           </p>
         </div>
@@ -230,7 +230,7 @@ function TimelineCard({ index, progress, data, count }) {
           {data.skills.map((sk, j) => (
             <span
               key={j}
-              className="px-4 py-1.5 bg-white/60 backdrop-blur-md rounded-full text-xs font-medium border border-white/40 text-gray-700"
+              className="px-4 py-1.5 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700"
             >
               {sk}
             </span>
@@ -294,7 +294,7 @@ export default function DevTimeline() {
           <h2
             className="font-[family-name:var(--font-space-grotesk)]"
             style={{
-              fontSize: "clamp(2rem,5vw,4rem)",
+              fontSize: "clamp(1.5rem,4vw,2.5rem)",
               fontWeight: 800,
               letterSpacing: "-0.03em",
               color: "#1A1A1A",
@@ -304,7 +304,7 @@ export default function DevTimeline() {
           </h2>
           <div style={{
             marginTop: "1rem",
-            fontSize: "0.85rem",
+            fontSize: "0.7rem",
             letterSpacing: "0.15em",
             textTransform: "uppercase",
             fontWeight: 700,

@@ -16,7 +16,7 @@ function AnimatedEmailCard() {
     <div onClick={handleCopy} className="glass-panel rounded-3xl p-6 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1">
       <div>
         <div className="flex justify-between items-start mb-1">
-          <h3 className="text-xl md:text-2xl font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Email</h3>
+          <h3 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Email</h3>
           <div className="p-1.5 bg-white/40 rounded-full group-hover:bg-black group-hover:text-white transition-colors relative flex items-center justify-center">
             <motion.div
               initial={false}
@@ -41,20 +41,20 @@ function AnimatedEmailCard() {
         </div>
         
         <div className="mt-3 flex flex-col">
-          <span className="text-lg md:text-xl font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600 truncate">
+          <span className="text-[15px] md:text-base font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600 truncate">
             monilsolanki30@gmail.com
           </span>
-          <span className="text-[13px] md:text-sm text-gray-500 font-medium mt-1">
+          <span className="text-[11px] md:text-xs text-gray-500 font-medium mt-1">
             {copied ? "Copied to clipboard!" : "Click to copy address"}
           </span>
         </div>
       </div>
       
       <div className="flex flex-wrap gap-2 mt-5">
-        <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+        <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
           Inquiries
         </span>
-        <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+        <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
           Say Hi
         </span>
       </div>
@@ -66,8 +66,8 @@ export default function ContactPanel() {
   return (
     <section id="contact" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full">
       <div className="mb-6 mt-8 md:mt-0">
-        <h2 className="text-3xl md:text-4xl font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Contact</h2>
-        <p className="text-gray-600 text-[15px] md:text-base">Let's build something incredible together.</p>
+        <h2 className="text-lg md:text-xl font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Contact</h2>
+        <p className="text-gray-600 text-xs md:text-[13px]">Let's build something incredible together.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -77,27 +77,27 @@ export default function ContactPanel() {
         <a href="tel:+919016460198" className="glass-panel rounded-3xl p-6 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1">
           <div>
             <div className="flex justify-between items-start mb-1">
-              <h3 className="text-xl md:text-2xl font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Phone</h3>
+              <h3 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Phone</h3>
               <div className="p-1.5 bg-white/40 rounded-full group-hover:bg-black group-hover:text-white transition-colors flex items-center justify-center">
                 <ExternalLink size={18} />
               </div>
             </div>
             
             <div className="mt-3 flex flex-col">
-              <span className="text-lg md:text-xl font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600">
+              <span className="text-[15px] md:text-base font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600">
                 +91 9016460198
               </span>
-              <span className="text-[13px] md:text-sm text-gray-500 font-medium mt-1">
+              <span className="text-[11px] md:text-xs text-gray-500 font-medium mt-1">
                 Available 9am - 9pm IST
               </span>
             </div>
           </div>
           
           <div className="flex flex-wrap gap-2 mt-5">
-            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
               Direct Call
             </span>
-            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
               WhatsApp
             </span>
           </div>
@@ -106,7 +106,7 @@ export default function ContactPanel() {
         <div className="glass-panel rounded-3xl p-6 flex flex-col justify-between group shadow-sm md:col-span-1">
           <div>
             <div className="flex justify-between items-start mb-1">
-              <h3 className="text-xl md:text-2xl font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Socials</h3>
+              <h3 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Socials</h3>
               <div className="p-1.5 bg-white/40 rounded-full group-hover:bg-black group-hover:text-white transition-colors flex items-center justify-center">
                 <ExternalLink size={18} />
               </div>
@@ -121,17 +121,17 @@ export default function ContactPanel() {
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
                 </a>
               </div>
-              <span className="text-[13px] md:text-sm text-gray-500 font-medium mt-3">
+              <span className="text-[11px] md:text-xs text-gray-500 font-medium mt-3">
                 Connect and follow my work
               </span>
             </div>
           </div>
           
           <div className="flex flex-wrap gap-2 mt-5">
-            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
               Network
             </span>
-            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+            <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
               Open Source
             </span>
           </div>
@@ -144,41 +144,41 @@ export default function ContactPanel() {
                 
         <div className="relative z-10">
           <div className="flex justify-between items-start mb-1">
-            <h3 className="text-xl md:text-2xl font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Resume & Background</h3>
+            <h3 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Resume & Background</h3>
             <div className="p-1.5 bg-white/40 rounded-full group-hover:bg-black group-hover:text-white transition-colors flex items-center justify-center">
               <ExternalLink size={18} />
             </div>
           </div>
           
           <div className="mt-3 flex flex-col">
-            <span className="text-lg md:text-xl font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600 flex items-center gap-2">
+            <span className="text-[15px] md:text-base font-bold font-[family-name:var(--font-space-grotesk)] text-blue-600 flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
               </span>
               Available for Opportunities
             </span>
-            <span className="text-[13px] md:text-sm text-gray-500 font-medium mt-1">
+            <span className="text-[11px] md:text-xs text-gray-500 font-medium mt-1">
               Grab a copy of my resume to explore my complete technical background, education, and professional experience in detail.
             </span>
           </div>
         </div>
         
         <div className="flex flex-wrap gap-2 mt-5 relative z-10">
-          <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+          <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
             Download PDF
           </span>
-          <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+          <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
             Full Experience
           </span>
-          <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[13px] md:text-sm font-medium border border-white/40 text-gray-700">
+          <span className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
             Education
           </span>
         </div>
       </a>
 
       <footer className="text-center mt-auto pt-10 pb-4">
-        <p className="text-[15px] font-medium text-gray-500 font-[family-name:var(--font-space-grotesk)]">
+        <p className="text-xs font-medium text-gray-500 font-[family-name:var(--font-space-grotesk)]">
           © {new Date().getFullYear()} Monil Solanki. All rights reserved.
         </p>
       </footer>
