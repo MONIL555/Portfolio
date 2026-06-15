@@ -11,13 +11,22 @@
     overflow-x: clip;
     max-width: 100%;
   }
+
+  /* Automatically scale the perfect 1440px layout for any larger monitor */
+  @media (min-width: 1441px) {
+    body {
+      zoom: calc(100vw / 1440);
+    }
+  }
 }
 
 @layer utilities {
   .glass-panel {
     background: rgba(255, 255, 255, 0.45);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    contain: layout style;
   }
 }

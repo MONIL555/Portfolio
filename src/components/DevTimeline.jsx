@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 
 const DATA = [
@@ -39,7 +39,7 @@ const COUNT = DATA.length;
 const CARD_W = 420;
 const CARD_H = 320;
 
-// ── Particle system (canvas) adapted for light theme ────────────────
+// ── Particle system (canvas) — visibility-gated, reduced counts ─────
 class Particle {
   constructor(W, H) {
     this.W = W;
@@ -87,6 +87,7 @@ function useParticles(canvasRef, rootRef) {
     let stars = [];
     let frame = 0;
     let rafId;
+    let isVisible = false;
 
     function resize() {
       W = canvas.width = root.offsetWidth;
@@ -95,8 +96,9 @@ function useParticles(canvasRef, rootRef) {
 
     function init() {
       resize();
-      particles = Array.from({ length: 180 }, () => new Particle(W, H));
-      stars = Array.from({ length: 90 }, () => ({
+      // Reduced from 180→80 particles and 90→40 stars
+      particles = Array.from({ length: 80 }, () => new Particle(W, H));
+      stars = Array.from({ length: 40 }, () => ({
         x: Math.random(),
         y: Math.random(),
         r: 0.2 + Math.random() * 0.7,
@@ -106,6 +108,10 @@ function useParticles(canvasRef, rootRef) {
 
     function tick() {
       rafId = requestAnimationFrame(tick);
+
+      // Skip rendering when off-screen
+      if (!isVisible) return;
+
       ctx.clearRect(0, 0, W, H);
 
       stars.forEach((s) => {
@@ -120,17 +126,18 @@ function useParticles(canvasRef, rootRef) {
         p.draw(ctx);
       });
 
-      if (frame % 4 === 0) {
-        for (let i = 0; i < particles.length; i += 5) {
-          for (let j = i + 1; j < particles.length; j += 5) {
+      // Throttled connection lines: every 8th frame, larger step
+      if (frame % 8 === 0) {
+        for (let i = 0; i < particles.length; i += 8) {
+          for (let j = i + 1; j < particles.length; j += 8) {
             const dx = particles[i].x - particles[j].x;
             const dy = particles[i].y - particles[j].y;
-            const d = Math.sqrt(dx * dx + dy * dy);
-            if (d < 65) {
+            const d = dx * dx + dy * dy; // Skip sqrt, compare squared
+            if (d < 4225) { // 65*65
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(100,120,200,${(1 - d / 65) * 0.08})`;
+              ctx.strokeStyle = `rgba(100,120,200,${(1 - Math.sqrt(d) / 65) * 0.08})`;
               ctx.lineWidth = 0.35;
               ctx.stroke();
             }
@@ -140,59 +147,52 @@ function useParticles(canvasRef, rootRef) {
       frame++;
     }
 
+    // IntersectionObserver to pause when off-screen
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { rootMargin: '50px' }
+    );
+    observer.observe(root);
+
     init();
     tick();
     window.addEventListener("resize", resize);
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener("resize", resize);
+      observer.disconnect();
     };
   }, [canvasRef, rootRef]);
 }
 
-// ── Motion Card Component ───────────────────────────────────────────
+// ── Motion Card — unified single useTransform ───────────────────────
 function TimelineCard({ index, progress, data, count }) {
   const activeFloat = useTransform(progress, [0, 1], [0, count - 1]);
   
-  // Custom transform to map the card perfectly onto a 3D cylinder
-  const transform = useTransform(activeFloat, (a) => {
+  // Single unified transform computation instead of 3 separate ones
+  const computedStyle = useTransform(activeFloat, (a) => {
     let diff = index - a;
     
-    // Wrap around to create an infinite circular queue (cylinder)
     while (diff > count / 2) diff -= count;
     while (diff < -count / 2) diff += count;
 
-    // Angle evenly distributes cards around the 360deg cylinder
+    const absDiff = Math.abs(diff);
     const angle = diff * (360 / count);
-    
-    // Radius pushes them out to form the cylinder's surface. 
-    // INCREASING THIS MAKES THE CYLINDER WIDER.
     const radius = 520; 
-    
-    // Y drop creates the vertical staircase effect
     const yDrop = diff * 120; 
 
-    // VERY IMPORTANT: rotateY must come BEFORE translateZ to push outward in 3D space
-    return `translateY(${yDrop}px) rotateY(${angle}deg) translateZ(${radius}px)`;
+    const transform = `translateY(${yDrop}px) rotateY(${angle}deg) translateZ(${radius}px)`;
+    const opacity = Math.max(0.05, 1 - absDiff * 0.5);
+    const blur = absDiff * 3;
+
+    return `${transform}|${opacity}|${blur}`;
   });
 
-  const opacity = useTransform(activeFloat, (a) => {
-    let diff = index - a;
-    while (diff > count / 2) diff -= count;
-    while (diff < -count / 2) diff += count;
-    
-    // Full opacity when active, fade significantly when pushed back
-    return Math.max(0.05, 1 - Math.abs(diff) * 0.5);
-  });
-
-  const filter = useTransform(activeFloat, (a) => {
-    let diff = index - a;
-    while (diff > count / 2) diff -= count;
-    while (diff < -count / 2) diff += count;
-    
-    const blurAmount = Math.abs(diff) * 3;
-    return `blur(${blurAmount}px)`;
-  });
+  const transform = useTransform(computedStyle, (v) => v.split('|')[0]);
+  const opacity = useTransform(computedStyle, (v) => parseFloat(v.split('|')[1]));
+  const filter = useTransform(computedStyle, (v) => `blur(${v.split('|')[2]}px)`);
 
   return (
     <motion.div
@@ -206,9 +206,10 @@ function TimelineCard({ index, progress, data, count }) {
         opacity,
         filter,
         backfaceVisibility: "hidden",
+        willChange: "transform, opacity, filter",
       }}
     >
-      {/* Card body using EXACT ProjectsDashboard classes */}
+      {/* Card body */}
       <div className="w-full h-full glass-panel rounded-3xl p-8 flex flex-col justify-between shadow-sm">
         <div>
           <div className="flex justify-between items-start mb-2">
@@ -255,10 +256,10 @@ export default function DevTimeline() {
     offset: ["start start", "end end"]
   });
 
-  // Spring physics for buttery smooth scrolling
+  // Tuned spring: faster settling = fewer re-render frames
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 70,
-    damping: 20,
+    stiffness: 120,
+    damping: 30,
     restDelta: 0.001
   });
 
@@ -266,11 +267,9 @@ export default function DevTimeline() {
     <section
       ref={sectionRef}
       style={{
-        // 400vh gives enough scroll distance to comfortably move through the 5 cards
         height: `${COUNT * 80}vh`, 
         background: "var(--color-canvas, #FAF8F5)",
         position: "relative",
-        // Prevent horizontal scrollbar caused by transformed 3D cards
         overflowX: "clip",
         width: "100%",
       }}
@@ -294,7 +293,7 @@ export default function DevTimeline() {
           <h2
             className="font-[family-name:var(--font-space-grotesk)]"
             style={{
-              fontSize: "clamp(1.5rem,4vw,2.5rem)",
+              fontSize: "clamp(1.5rem, 5vw, 5rem)",
               fontWeight: 800,
               letterSpacing: "-0.03em",
               color: "#1A1A1A",
@@ -302,14 +301,7 @@ export default function DevTimeline() {
           >
             How I Build.
           </h2>
-          <div style={{
-            marginTop: "1rem",
-            fontSize: "0.7rem",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-            color: "#6B7280"
-          }}>
+          <div className="text-[0.7rem] 3xl:text-[1rem] mt-4 tracking-[0.15em] uppercase font-bold text-gray-500">
             ↓ Keep scrolling to explore ↓
           </div>
         </div>
@@ -326,6 +318,7 @@ export default function DevTimeline() {
 
         {/* 3D Scene */}
         <div
+          className="3xl:scale-[1.5] origin-center"
           style={{
             position: "absolute",
             inset: 0,
@@ -342,7 +335,8 @@ export default function DevTimeline() {
             transform: "translateZ(-520px)",
             width: CARD_W,
             height: CARD_H,
-            position: "relative"
+            position: "relative",
+            willChange: "transform",
           }}>
             {DATA.map((d, i) => (
               <TimelineCard 
