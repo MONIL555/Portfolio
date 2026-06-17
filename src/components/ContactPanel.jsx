@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { Mail, Phone, ExternalLink } from "lucide-react";
 import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 
-function AnimatedEmailCard({ styleLeft }) {
+function AnimatedEmailCard() {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -14,7 +14,10 @@ function AnimatedEmailCard({ styleLeft }) {
 
   return (
     <motion.div 
-      style={styleLeft}
+      initial={{ opacity: 0, x: -50, filter: "blur(10px)" }}
+      whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      viewport={{ once: true, margin: "-10%" }}
       onClick={handleCopy} 
       className="glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1"
     >
@@ -67,38 +70,13 @@ function AnimatedEmailCard({ styleLeft }) {
 }
 
 export default function ContactPanel() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 25,
-    restDelta: 0.001
-  });
-
-  const progress = useTransform(smoothProgress, [0.2, 0.8], [0, 1]);
-
-  const headerY = useTransform(progress, [0, 1], [50, 0]);
-  const headerOpacity = useTransform(progress, [0, 1], [0, 1]);
-
-  const leftX = useTransform(progress, [0, 1], [-150, 0]);
-  const rightX = useTransform(progress, [0, 1], [150, 0]);
-  const bottomY = useTransform(progress, [0, 1], [150, 0]);
-  const opacity = useTransform(progress, [0, 1], [0, 1]);
-  const blurVal = useTransform(progress, [0, 1], [10, 0]);
-  const filter = useMotionTemplate`blur(${blurVal}px)`;
-
-  const styleLeft = { x: leftX, opacity, filter };
-  const styleRight = { x: rightX, opacity, filter };
-  const styleUp = { y: bottomY, opacity, filter };
-
   return (
-    <section id="contact" ref={containerRef} className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full overflow-hidden">
+    <section id="contact" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full overflow-hidden">
       <motion.div 
-        style={{ y: headerY, opacity: headerOpacity }}
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-10%" }}
         className="mb-6 mt-8 md:mt-0"
       >
         <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Contact</h2>
@@ -106,10 +84,13 @@ export default function ContactPanel() {
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <AnimatedEmailCard styleLeft={styleLeft} />
+        <AnimatedEmailCard />
         
         <motion.a 
-          style={styleUp}
+          initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+          viewport={{ once: true, margin: "-10%" }}
           href="tel:+919016460198" 
           className="glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1"
         >
@@ -142,7 +123,10 @@ export default function ContactPanel() {
         </motion.a>
 
         <motion.div 
-          style={styleRight}
+          initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
+          whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          viewport={{ once: true, margin: "-10%" }}
           className="glass-panel rounded-3xl p-5 flex flex-col justify-between group shadow-sm md:col-span-1"
         >
           <div>
@@ -182,7 +166,10 @@ export default function ContactPanel() {
 
       {/* Resume Download & Availability Banner */}
       <motion.a 
-        style={styleUp}
+        initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+        whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+        viewport={{ once: true, margin: "-10%" }}
         href="/MONIL SOLANKI RESUME.pdf" 
         target="_blank" 
         rel="noopener noreferrer" 

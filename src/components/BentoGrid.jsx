@@ -4,42 +4,18 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 
 export default function BentoGrid() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 25,
-    restDelta: 0.001
-  });
-
-  const progress = useTransform(smoothProgress, [0.1, 0.4, 0.6, 0.9], [0, 1, 1, 0]);
-
-  const headerY = useTransform(progress, [0, 1], [50, 0]);
-  const headerOpacity = useTransform(progress, [0, 1], [0, 1]);
-
-  const cardY = useTransform(progress, [0, 1], [50, 0]);
-  const cardScale = useTransform(progress, [0, 1], [0.95, 1]);
-  const cardOpacity = useTransform(progress, [0, 1], [0, 1]);
-  const cardRotate = useTransform(progress, [0, 1], [-2, 0]);
-  const blurVal = useTransform(progress, [0, 1], [10, 0]);
-  const cardFilter = useMotionTemplate`blur(${blurVal}px)`;
-
-  const cardStyle = {
-    y: cardY,
-    scale: cardScale,
-    opacity: cardOpacity,
-    rotate: cardRotate,
-    filter: cardFilter,
-  };
+  const cardInitial = { opacity: 0, y: 50, scale: 0.95, rotate: -2, filter: "blur(10px)" };
+  const cardWhileInView = { opacity: 1, y: 0, scale: 1, rotate: 0, filter: "blur(0px)" };
+  const cardTransition = { duration: 0.8, ease: "easeOut" };
+  const cardViewport = { once: true, margin: "-10%" };
 
   return (
-    <section id="experience" ref={containerRef} className="min-h-screen flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 max-w-7xl mx-auto w-full">
+    <section id="experience" className="min-h-screen flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 max-w-7xl mx-auto w-full">
       <motion.div 
-        style={{ y: headerY, opacity: headerOpacity }}
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-10%" }}
         className="mb-6 mt-12 md:mt-0"
       >
         <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-2">Background & Experience</h2>
@@ -50,7 +26,10 @@ export default function BentoGrid() {
         
         {/* Experience Card */}
         <motion.div 
-          style={cardStyle}
+          initial={cardInitial}
+          whileInView={cardWhileInView}
+          transition={cardTransition}
+          viewport={cardViewport}
           className="glass-panel rounded-3xl p-6 md:col-span-2 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
         >
           <div>
@@ -85,7 +64,10 @@ export default function BentoGrid() {
 
         {/* Education Card */}
         <motion.div 
-          style={cardStyle}
+          initial={cardInitial}
+          whileInView={cardWhileInView}
+          transition={{ ...cardTransition, delay: 0.1 }}
+          viewport={cardViewport}
           className="glass-panel rounded-3xl p-6 md:col-span-1 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
         >
           <div>
@@ -111,7 +93,10 @@ export default function BentoGrid() {
 
         {/* Certifications Card */}
         <motion.div 
-          style={cardStyle}
+          initial={cardInitial}
+          whileInView={cardWhileInView}
+          transition={{ ...cardTransition, delay: 0.2 }}
+          viewport={cardViewport}
           className="glass-panel rounded-3xl p-6 md:col-span-3 flex flex-col justify-center group hover:bg-white/50 transition-colors shadow-sm"
         >
           <p className="text-xs font-semibold tracking-widest text-gray-500 mb-4">CERTIFICATIONS</p>
