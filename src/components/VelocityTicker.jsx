@@ -31,7 +31,7 @@ function TickerRow({ direction = "left", speed = 30 }) {
   };
 
   return (
-    <div className="flex whitespace-nowrap gap-6 font-[family-name:var(--font-space-grotesk)] text-base md:text-lg">
+    <div className="flex whitespace-nowrap gap-6 font-[family-name:var(--font-space-grotesk)] text-sm md:text-base">
       <div className="flex gap-6 shrink-0" style={animationStyle}>
         {content}
       </div>
@@ -47,7 +47,7 @@ export default function VelocityTicker() {
     <div className="relative w-full -mt-2 mb-16 z-20">
       {/* Angled dark strip */}
       <div
-        className="w-full py-5 overflow-hidden bg-gradient-to-r from-[#111111] via-[#1a1a1a] to-[#111111] -rotate-2 scale-110 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+        className="w-full py-4 overflow-hidden bg-gradient-to-r from-[#111111] via-[#1a1a1a] to-[#111111] -rotate-2 scale-110 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
         style={{ borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
       >
         {/* Fade edges */}

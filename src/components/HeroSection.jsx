@@ -64,16 +64,16 @@ export default function HeroSection() {
         variants={stagger}
         initial="hidden"
         animate="show"
-        className="relative z-10 w-full max-w-7xl 3xl:max-w-[2000px] mx-auto mt-4" // mt-4 pushes it closer to nav
+        className="relative z-10 w-full max-w-7xl mx-auto mt-4" // mt-4 pushes it closer to nav
       >
         <motion.div
           variants={cardUp}
-          className={`${cardBase} flex flex-col md:flex-row w-full h-auto md:h-[75vh] min-h-[35rem] 3xl:min-h-[50rem] p-0`}
+          className={`${cardBase} flex flex-col md:flex-row w-full h-auto md:h-[75vh] min-h-[35rem] p-0`}
         >
           {/* ═══════════════════════════════════════════
               LEFT SIDE — Portfolio Info
           ═══════════════════════════════════════════ */}
-          <div className="relative z-10 flex-1 flex flex-col justify-between p-8 md:p-10 lg:p-12 3xl:p-20 border-b md:border-b-0 md:border-r border-black/5 bg-white/10">
+          <div className="relative z-10 flex-1 flex flex-col justify-between p-8 md:p-10 lg:p-12 border-b md:border-b-0 md:border-r border-black/5 bg-white/10">
             {/* subtle corner decoration inside left */}
             <div
               className="absolute top-0 right-0 w-64 h-64 pointer-events-none opacity-50"
@@ -84,44 +84,40 @@ export default function HeroSection() {
 
             {/* top content */}
             <div className="relative z-10">
-              <p className="text-[10px] md:text-[11px] 3xl:text-sm font-semibold tracking-[0.25em] uppercase text-gray-400 mb-6 3xl:mb-8">
-                Portfolio
-              </p>
-
               <h1
-                className="font-[family-name:var(--font-space-grotesk)] font-black tracking-[-0.03em] leading-[0.92] mb-4 3xl:mb-8"
-                style={{ fontSize: "clamp(2.5rem, 5vw, 7rem)", color: "#0f0f0f" }}
+                className="font-[family-name:var(--font-space-grotesk)] font-black tracking-[-0.03em] leading-[0.92] mb-4 text-4xl md:text-6xl lg:text-7xl"
+                style={{ color: "#0f0f0f" }}
               >
                 Monil Solanki
               </h1>
 
-              <div className="flex items-center gap-3 mb-6 3xl:mb-10">
-                <span className="inline-block w-8 3xl:w-12 h-[2px] bg-gray-300 rounded-full" />
-                <span className="text-sm md:text-base 3xl:text-2xl font-semibold text-gray-500 tracking-tight font-[family-name:var(--font-space-grotesk)]">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="inline-block w-8 h-[2px] bg-gray-300 rounded-full" />
+                <span className="text-sm md:text-base font-semibold text-gray-500 tracking-tight font-[family-name:var(--font-space-grotesk)]">
                   Full-Stack Developer
                 </span>
               </div>
 
-              <p className="text-[13px] md:text-[15px] 3xl:text-xl leading-[1.75] text-gray-500 font-medium max-w-md 3xl:max-w-2xl">
+              <p className="text-sm md:text-base leading-[1.75] text-gray-500 font-medium max-w-md">
                 B.Tech in Computer Engineering with expertise in the MERN stack
                 and Next.js. Passionate about building scalable applications,
                 AI integrations, and seamless user experiences.
               </p>
 
               {/* CTAs */}
-              <div className="flex flex-wrap items-center gap-4 3xl:gap-6 mt-8 3xl:mt-12">
+              <div className="flex flex-wrap items-center gap-4 mt-8">
                 <a
                   href="/MONIL SOLANKI RESUME.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/btn inline-flex items-center gap-2 px-7 py-3 3xl:px-10 3xl:py-5 bg-[#0f0f0f] text-white text-xs md:text-sm 3xl:text-xl font-semibold rounded-full hover:shadow-[0_4px_20px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 tracking-wide"
+                  className="group/btn inline-flex items-center gap-2 px-7 py-3 bg-[#0f0f0f] text-white text-xs md:text-sm font-semibold rounded-full hover:shadow-[0_4px_20px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 tracking-wide"
                 >
                   Resume
-                  <ArrowUpRight className="w-3.5 h-3.5 3xl:w-5 3xl:h-5 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
                 </a>
                 <a
                   href="#projects"
-                  className="inline-flex items-center px-7 py-3 3xl:px-10 3xl:py-5 text-xs md:text-sm 3xl:text-xl font-semibold rounded-full border border-black/10 text-gray-600 hover:bg-white/60 hover:-translate-y-0.5 transition-all duration-300 tracking-wide"
+                  className="inline-flex items-center px-7 py-3 text-xs md:text-sm font-semibold rounded-full border border-black/10 text-gray-600 hover:bg-white/60 hover:-translate-y-0.5 transition-all duration-300 tracking-wide"
                 >
                   View Projects
                 </a>
@@ -129,49 +125,49 @@ export default function HeroSection() {
             </div>
 
             {/* Bottom Info Row: Status & Connect merged */}
-            <div className="relative z-10 mt-10 pt-6 border-t border-black/5 flex flex-col sm:flex-row sm:items-center justify-between gap-6 3xl:gap-10">
+            <div className="relative z-10 mt-10 pt-6 border-t border-black/5 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               {/* Status (Left) */}
-              <div className="flex items-center gap-4 bg-white/40 px-4 py-3 3xl:px-6 3xl:py-5 rounded-2xl 3xl:rounded-3xl border border-white/50 shadow-sm w-max">
-                <div className="relative flex items-center justify-center w-8 h-8 3xl:w-12 3xl:h-12 rounded-full bg-emerald-100 border border-emerald-200">
-                  <span className="absolute inline-flex h-3 w-3 3xl:h-4 3xl:w-4 rounded-full bg-emerald-400 opacity-60 animate-ping" />
-                  <span className="relative inline-flex h-2 w-2 3xl:h-3 3xl:w-3 rounded-full bg-emerald-500" />
+              <div className="flex items-center gap-4 bg-white/40 px-4 py-3 rounded-2xl border border-white/50 shadow-sm w-max">
+                <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 border border-emerald-200">
+                  <span className="absolute inline-flex h-3 w-3 rounded-full bg-emerald-400 opacity-60 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm 3xl:text-xl font-bold text-gray-800 font-[family-name:var(--font-space-grotesk)] leading-tight">
+                  <span className="text-sm font-bold text-gray-800 font-[family-name:var(--font-space-grotesk)] leading-tight">
                     Available
                   </span>
-                  <span className="text-[10px] 3xl:text-xs uppercase tracking-wider text-gray-500 font-semibold mt-0.5">
+                  <span className="text-[10px] uppercase tracking-wider text-gray-500 font-semibold mt-0.5">
                     Open for opportunities
                   </span>
                 </div>
               </div>
 
               {/* Connect (Right) */}
-              <div className="flex items-center gap-2 3xl:gap-4 bg-white/40 p-2 3xl:p-4 rounded-2xl 3xl:rounded-3xl border border-white/50 shadow-sm">
+              <div className="flex items-center gap-2 bg-white/40 p-2 rounded-2xl border border-white/50 shadow-sm">
                 <a
                   href="https://github.com/MONIL555"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 3xl:w-14 3xl:h-14 rounded-xl 3xl:rounded-2xl bg-white hover:bg-gray-50 text-gray-600 hover:text-black shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300"
+                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-white hover:bg-gray-50 text-gray-600 hover:text-black shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300"
                   aria-label="GitHub"
                 >
-                  <GithubIcon className="w-[18px] h-[18px] 3xl:w-6 3xl:h-6" />
+                  <GithubIcon className="w-5 h-5" />
                 </a>
                 <a
                   href="https://linkedin.com/in/monil-solanki"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-10 h-10 3xl:w-14 3xl:h-14 rounded-xl 3xl:rounded-2xl bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-600 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300"
+                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-600 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300"
                   aria-label="LinkedIn"
                 >
-                  <LinkedinIcon className="w-[18px] h-[18px] 3xl:w-6 3xl:h-6" />
+                  <LinkedinIcon className="w-5 h-5" />
                 </a>
                 <a
                   href="mailto:monilsolanki30@gmail.com"
-                  className="flex items-center justify-center w-10 h-10 3xl:w-14 3xl:h-14 rounded-xl 3xl:rounded-2xl bg-white hover:bg-red-50 text-gray-600 hover:text-red-500 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300"
+                  className="flex items-center justify-center w-10 h-10 rounded-xl bg-white hover:bg-red-50 text-gray-600 hover:text-red-500 shadow-[0_2px_10px_rgba(0,0,0,0.03)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-all duration-300"
                   aria-label="Email"
                 >
-                  <MailIcon className="w-[18px] h-[18px] 3xl:w-6 3xl:h-6" />
+                  <MailIcon className="w-5 h-5" />
                 </a>
               </div>
             </div>

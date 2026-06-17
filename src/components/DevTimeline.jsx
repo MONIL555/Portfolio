@@ -36,8 +36,8 @@ const DATA = [
 ];
 
 const COUNT = DATA.length;
-const CARD_W = 420;
-const CARD_H = 320;
+const CARD_W = "26.25rem"; // 420px equivalent at 16px root
+const CARD_H = "20rem"; // 320px equivalent at 16px root
 
 // ── Particle system (canvas) — visibility-gated, reduced counts ─────
 class Particle {
@@ -180,10 +180,10 @@ function TimelineCard({ index, progress, data, count }) {
 
     const absDiff = Math.abs(diff);
     const angle = diff * (360 / count);
-    const radius = 520; 
-    const yDrop = diff * 120; 
+    const radius = 32.5; // 520px equivalent
+    const yDrop = diff * 7.5; // 120px equivalent
 
-    const transform = `translateY(${yDrop}px) rotateY(${angle}deg) translateZ(${radius}px)`;
+    const transform = `translateY(${yDrop}rem) rotateY(${angle}deg) translateZ(${radius}rem)`;
     const opacity = Math.max(0.05, 1 - absDiff * 0.5);
     const blur = absDiff * 3;
 
@@ -210,7 +210,7 @@ function TimelineCard({ index, progress, data, count }) {
       }}
     >
       {/* Card body */}
-      <div className="w-full h-full glass-panel rounded-3xl p-8 flex flex-col justify-between shadow-sm">
+      <div className="w-full h-full glass-panel rounded-3xl p-6 flex flex-col justify-between shadow-sm">
         <div>
           <div className="flex justify-between items-start mb-2">
             <span className="font-[family-name:var(--font-space-grotesk)] text-[10px] md:text-[11px] font-bold tracking-widest uppercase text-gray-500">
@@ -218,11 +218,11 @@ function TimelineCard({ index, progress, data, count }) {
             </span>
           </div>
 
-          <h3 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] leading-tight mb-4 text-gray-900">
+          <h3 className="text-sm md:text-base font-bold font-[family-name:var(--font-space-grotesk)] leading-tight mb-3 text-gray-900">
             {data.title}
           </h3>
 
-          <p className="text-gray-600 text-xs md:text-[13px] leading-relaxed">
+          <p className="text-gray-600 text-xs leading-relaxed">
             {data.desc}
           </p>
         </div>
@@ -231,7 +231,7 @@ function TimelineCard({ index, progress, data, count }) {
           {data.skills.map((sk, j) => (
             <span
               key={j}
-              className="px-4 py-1.5 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700"
+              className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700"
             >
               {sk}
             </span>
@@ -301,7 +301,7 @@ export default function DevTimeline() {
           >
             How I Build.
           </h2>
-          <div className="text-[0.7rem] 3xl:text-[1rem] mt-4 tracking-[0.15em] uppercase font-bold text-gray-500">
+          <div className="text-[10px] mt-4 tracking-[0.15em] uppercase font-bold text-gray-500">
             ↓ Keep scrolling to explore ↓
           </div>
         </div>
@@ -318,7 +318,7 @@ export default function DevTimeline() {
 
         {/* 3D Scene */}
         <div
-          className="3xl:scale-[1.5] origin-center"
+          className="origin-center"
           style={{
             position: "absolute",
             inset: 0,
@@ -332,7 +332,7 @@ export default function DevTimeline() {
         >
           <div style={{ 
             transformStyle: "preserve-3d", 
-            transform: "translateZ(-520px)",
+            transform: "translateZ(-32.5rem)",
             width: CARD_W,
             height: CARD_H,
             position: "relative",
