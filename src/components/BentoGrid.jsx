@@ -1,17 +1,58 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
+
 export default function BentoGrid() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 25,
+    restDelta: 0.001
+  });
+
+  const progress = useTransform(smoothProgress, [0.1, 0.4, 0.6, 0.9], [0, 1, 1, 0]);
+
+  const headerY = useTransform(progress, [0, 1], [50, 0]);
+  const headerOpacity = useTransform(progress, [0, 1], [0, 1]);
+
+  const cardY = useTransform(progress, [0, 1], [50, 0]);
+  const cardScale = useTransform(progress, [0, 1], [0.95, 1]);
+  const cardOpacity = useTransform(progress, [0, 1], [0, 1]);
+  const cardRotate = useTransform(progress, [0, 1], [-2, 0]);
+  const blurVal = useTransform(progress, [0, 1], [10, 0]);
+  const cardFilter = useMotionTemplate`blur(${blurVal}px)`;
+
+  const cardStyle = {
+    y: cardY,
+    scale: cardScale,
+    opacity: cardOpacity,
+    rotate: cardRotate,
+    filter: cardFilter,
+  };
+
   return (
-    <section id="experience" className="min-h-screen flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 max-w-7xl mx-auto w-full">
-      <div className="mb-6 mt-12 md:mt-0">
+    <section id="experience" ref={containerRef} className="min-h-screen flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 max-w-7xl mx-auto w-full">
+      <motion.div 
+        style={{ y: headerY, opacity: headerOpacity }}
+        className="mb-6 mt-12 md:mt-0"
+      >
         <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-2">Background & Experience</h2>
         <p className="text-gray-600 text-xs">My technical journey and credentials.</p>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 auto-rows-[minmax(200px,auto)]">
         
         {/* Experience Card */}
-        <div className="glass-panel rounded-3xl p-6 md:col-span-2 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm">
+        <motion.div 
+          style={cardStyle}
+          className="glass-panel rounded-3xl p-6 md:col-span-2 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
+        >
           <div>
             <p className="text-xs font-semibold tracking-widest text-gray-500 mb-3">EXPERIENCE</p>
             <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
@@ -40,10 +81,13 @@ export default function BentoGrid() {
               <span>Constructed highly scalable <strong>RESTful APIs</strong> utilizing the MVC architectural pattern and implemented reusable middleware for authentication, validation, and error handling, accelerating new feature deployment by 30%.</span>
             </li>
           </ul>
-        </div>
+        </motion.div>
 
         {/* Education Card */}
-        <div className="glass-panel rounded-3xl p-6 md:col-span-1 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm">
+        <motion.div 
+          style={cardStyle}
+          className="glass-panel rounded-3xl p-6 md:col-span-1 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
+        >
           <div>
             <p className="text-xs font-semibold tracking-widest text-gray-500 mb-4">EDUCATION</p>
             
@@ -63,10 +107,13 @@ export default function BentoGrid() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Certifications Card */}
-        <div className="glass-panel rounded-3xl p-6 md:col-span-3 flex flex-col justify-center group hover:bg-white/50 transition-colors shadow-sm">
+        <motion.div 
+          style={cardStyle}
+          className="glass-panel rounded-3xl p-6 md:col-span-3 flex flex-col justify-center group hover:bg-white/50 transition-colors shadow-sm"
+        >
           <p className="text-xs font-semibold tracking-widest text-gray-500 mb-4">CERTIFICATIONS</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -90,7 +137,7 @@ export default function BentoGrid() {
               <p className="text-[11px] md:text-xs text-gray-700 leading-relaxed">Ranked in the top 10% for complexity analysis and dynamic programming.</p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </section>

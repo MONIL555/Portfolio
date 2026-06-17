@@ -1,12 +1,12 @@
 "use client";
 import { ExternalLink } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
 function AnimatedMetric({ value, label, suffix = "", duration = 2 }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: false, margin: "-50px" });
 
   useEffect(() => {
     if (isInView) {
@@ -35,7 +35,7 @@ function AnimatedMetric({ value, label, suffix = "", duration = 2 }) {
 
 function AnimatedGraph() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const isInView = useInView(ref, { once: false, margin: "-50px" });
   
   return (
     <div ref={ref} className="mt-2 flex items-end h-8 space-x-1.5">
@@ -52,7 +52,73 @@ function AnimatedGraph() {
   );
 }
 
+function ProjectCard({ project, i, progress }) {
+  const startX = i === 0 ? -324 : i === 1 ? 289 : i === 2 ? -276 : 342;
+  const startY = i === 0 ? -163 : i === 1 ? -214 : i === 2 ? 238 : 187;
+  
+  // Use the remapped progress value instead of raw scrollYProgress
+  const x = useTransform(progress, [0, 1], [startX, 0]);
+  const y = useTransform(progress, [0, 1], [startY, 0]);
+  const rotateX = useTransform(progress, [0, 1], [-25, 0]);
+  const scale = useTransform(progress, [0, 1], [0.8, 1]);
+  const opacity = useTransform(progress, [0, 1], [0, 1]);
+  const blurVal = useTransform(progress, [0, 1], [10, 0]);
+  const filter = useMotionTemplate`blur(${blurVal}px)`;
+
+  return (
+    <motion.div 
+      style={{ x, y, rotateX, scale, opacity, filter }}
+      className={`glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size}`}
+    >
+      <div>
+        <div className="flex justify-between items-start mb-1">
+          <h3 className="text-sm md:text-base font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">{project.title}</h3>
+          <div className="p-1.5 bg-white/40 rounded-full group-hover:bg-black group-hover:text-white transition-colors">
+            <ExternalLink className="w-4 h-4" />
+          </div>
+        </div>
+        {project.metric}
+        
+        <ul className="mt-3 space-y-2 text-gray-600 text-xs leading-relaxed">
+          {project.description.map((desc, index) => (
+            <li key={index} className="flex items-start gap-2">
+              <span className="w-1 h-1 rounded-full bg-black/40 mt-1.5 flex-shrink-0"></span>
+              <span>{desc}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      
+      <div className="flex flex-wrap gap-2 mt-4">
+        {project.tags.map((tag, j) => (
+          <span key={j} className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function ProjectsDashboard() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"], // Track entire visibility lifecycle
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 25,
+    restDelta: 0.001
+  });
+
+  // Map progress to assemble when entering, hold in middle, and disassemble when leaving.
+  const progress = useTransform(smoothProgress, [0.1, 0.4, 0.6, 0.9], [0, 1, 1, 0]);
+
+  const headerY = useTransform(progress, [0, 1], [50, 0]);
+  const headerOpacity = useTransform(progress, [0, 1], [0, 1]);
+
   const projects = [
     {
       title: "Lead to Ledger (PMS)",
@@ -100,42 +166,23 @@ export default function ProjectsDashboard() {
   ];
 
   return (
-    <section id="projects" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full">
-      <div className="mb-6 mt-8 md:mt-0">
+    <section 
+      id="projects" 
+      ref={containerRef} 
+      className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full" 
+      style={{ perspective: "1200px" }}
+    >
+      <motion.div 
+        style={{ y: headerY, opacity: headerOpacity }}
+        className="mb-6 mt-8 md:mt-0"
+      >
         <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Projects Dashboard</h2>
         <p className="text-gray-600 text-xs">Selected works and applications.</p>
-      </div>
+      </motion.div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {projects.map((project, i) => (
-          <div key={i} className={`glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size}`}>
-            <div>
-              <div className="flex justify-between items-start mb-1">
-                <h3 className="text-sm md:text-base font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">{project.title}</h3>
-                <div className="p-1.5 bg-white/40 rounded-full group-hover:bg-black group-hover:text-white transition-colors">
-                  <ExternalLink className="w-4 h-4" />
-                </div>
-              </div>
-              {project.metric}
-              
-              <ul className="mt-3 space-y-2 text-gray-600 text-xs leading-relaxed">
-                {project.description.map((desc, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-black/40 mt-1.5 flex-shrink-0"></span>
-                    <span>{desc}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <div className="flex flex-wrap gap-2 mt-4">
-              {project.tags.map((tag, j) => (
-                <span key={j} className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
+          <ProjectCard key={i} project={project} i={i} progress={progress} />
         ))}
       </div>
     </section>

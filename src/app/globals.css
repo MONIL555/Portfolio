@@ -9,6 +9,7 @@
 @layer base {
   html {
     font-size: clamp(13px, 1.05vw, 30.4px);
+    scroll-behavior: smooth;
   }
 
   body {

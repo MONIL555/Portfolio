@@ -1,9 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Mail, Phone, ExternalLink } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 
-function AnimatedEmailCard() {
+function AnimatedEmailCard({ styleLeft }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -13,7 +13,11 @@ function AnimatedEmailCard() {
   };
 
   return (
-    <div onClick={handleCopy} className="glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1">
+    <motion.div 
+      style={styleLeft}
+      onClick={handleCopy} 
+      className="glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1"
+    >
       <div>
         <div className="flex justify-between items-start mb-1">
           <h3 className="text-sm md:text-base font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Email</h3>
@@ -58,23 +62,57 @@ function AnimatedEmailCard() {
           Say Hi
         </span>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 export default function ContactPanel() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 25,
+    restDelta: 0.001
+  });
+
+  const progress = useTransform(smoothProgress, [0.2, 0.8], [0, 1]);
+
+  const headerY = useTransform(progress, [0, 1], [50, 0]);
+  const headerOpacity = useTransform(progress, [0, 1], [0, 1]);
+
+  const leftX = useTransform(progress, [0, 1], [-150, 0]);
+  const rightX = useTransform(progress, [0, 1], [150, 0]);
+  const bottomY = useTransform(progress, [0, 1], [150, 0]);
+  const opacity = useTransform(progress, [0, 1], [0, 1]);
+  const blurVal = useTransform(progress, [0, 1], [10, 0]);
+  const filter = useMotionTemplate`blur(${blurVal}px)`;
+
+  const styleLeft = { x: leftX, opacity, filter };
+  const styleRight = { x: rightX, opacity, filter };
+  const styleUp = { y: bottomY, opacity, filter };
+
   return (
-    <section id="contact" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full">
-      <div className="mb-6 mt-8 md:mt-0">
+    <section id="contact" ref={containerRef} className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full overflow-hidden">
+      <motion.div 
+        style={{ y: headerY, opacity: headerOpacity }}
+        className="mb-6 mt-8 md:mt-0"
+      >
         <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Contact</h2>
         <p className="text-gray-600 text-xs">Let's build something incredible together.</p>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <AnimatedEmailCard styleLeft={styleLeft} />
         
-        <AnimatedEmailCard />
-        
-        <a href="tel:+919016460198" className="glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1">
+        <motion.a 
+          style={styleUp}
+          href="tel:+919016460198" 
+          className="glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm md:col-span-1"
+        >
           <div>
             <div className="flex justify-between items-start mb-1">
               <h3 className="text-sm md:text-base font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Phone</h3>
@@ -101,9 +139,12 @@ export default function ContactPanel() {
               WhatsApp
             </span>
           </div>
-        </a>
+        </motion.a>
 
-        <div className="glass-panel rounded-3xl p-5 flex flex-col justify-between group shadow-sm md:col-span-1">
+        <motion.div 
+          style={styleRight}
+          className="glass-panel rounded-3xl p-5 flex flex-col justify-between group shadow-sm md:col-span-1"
+        >
           <div>
             <div className="flex justify-between items-start mb-1">
               <h3 className="text-sm md:text-base font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">Socials</h3>
@@ -135,12 +176,18 @@ export default function ContactPanel() {
               Open Source
             </span>
           </div>
-        </div>
+        </motion.div>
         
       </div>
 
       {/* Resume Download & Availability Banner */}
-      <a href="/MONIL SOLANKI RESUME.pdf" target="_blank" rel="noopener noreferrer" className="mt-4 glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm block relative overflow-hidden">
+      <motion.a 
+        style={styleUp}
+        href="/MONIL SOLANKI RESUME.pdf" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="mt-4 glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm block relative overflow-hidden"
+      >
                 
         <div className="relative z-10">
           <div className="flex justify-between items-start mb-1">
@@ -175,13 +222,19 @@ export default function ContactPanel() {
             Education
           </span>
         </div>
-      </a>
+      </motion.a>
 
-      <footer className="text-center mt-auto pt-10 pb-4">
+      <motion.footer 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1.5, delay: 0.5 }}
+        viewport={{ once: false }}
+        className="text-center mt-auto pt-10 pb-4"
+      >
         <p className="text-xs font-medium text-gray-500 font-[family-name:var(--font-space-grotesk)]">
           © {new Date().getFullYear()} Monil Solanki. All rights reserved.
         </p>
-      </footer>
+      </motion.footer>
     </section>
   );
 }

@@ -1,5 +1,8 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
+
 const skills = [
   "JavaScript (ES6+)",
   "Next.js",
@@ -43,8 +46,31 @@ function TickerRow({ direction = "left", speed = 30 }) {
 }
 
 export default function VelocityTicker() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 25,
+    restDelta: 0.001
+  });
+
+  const progress = useTransform(smoothProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+
+  const y = useTransform(progress, [0, 1], [60, 0]);
+  const opacity = useTransform(progress, [0, 1], [0, 1]);
+  const blurVal = useTransform(progress, [0, 1], [10, 0]);
+  const filter = useMotionTemplate`blur(${blurVal}px)`;
+
   return (
-    <div className="relative w-full -mt-2 mb-16 z-20">
+    <motion.div 
+      ref={containerRef}
+      style={{ y, opacity, filter }}
+      className="relative w-full -mt-2 mb-16 z-20"
+    >
       {/* Angled dark strip */}
       <div
         className="w-full py-4 overflow-hidden bg-gradient-to-r from-[#111111] via-[#1a1a1a] to-[#111111] -rotate-2 scale-110 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
@@ -75,6 +101,6 @@ export default function VelocityTicker() {
           to   { transform: translate3d(0, 0, 0); }
         }
       `}} />
-    </div>
+    </motion.div>
   );
 }

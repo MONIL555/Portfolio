@@ -289,13 +289,19 @@ export default function DevTimeline() {
         }}
       >
         {/* Header */}
-        <div style={{ textAlign: "center", position: "absolute", top: "10%", left: 0, right: 0, zIndex: 10 }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: false, amount: 0.5 }}
+          style={{ textAlign: "center", position: "absolute", top: "10%", left: 0, right: 0, zIndex: 10 }}
+        >
           <h2
             className="font-[family-name:var(--font-space-grotesk)]"
             style={{
               fontSize: "clamp(1.5rem, 5vw, 5rem)",
               fontWeight: 800,
-              letterSpacing: "-0.03em",
+              letterSpacing: "-0.04em",
               color: "#1A1A1A",
             }}
           >
@@ -304,7 +310,7 @@ export default function DevTimeline() {
           <div className="text-[10px] mt-4 tracking-[0.15em] uppercase font-bold text-gray-500">
             ↓ Keep scrolling to explore ↓
           </div>
-        </div>
+        </motion.div>
 
         {/* Canvas & Fog */}
         <canvas
