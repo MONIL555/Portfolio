@@ -53,8 +53,8 @@ function AnimatedGraph() {
 }
 
 function ProjectCard({ project, i, progress }) {
-  const startX = i === 0 ? -324 : i === 1 ? 289 : i === 2 ? -276 : 342;
-  const startY = i === 0 ? -163 : i === 1 ? -214 : i === 2 ? 238 : 187;
+  const startX = i === 0 ? -324 : i === 1 ? 289 : i === 2 ? -276 : i === 3 ? 342 : -310;
+  const startY = i === 0 ? -163 : i === 1 ? -214 : i === 2 ? 238 : i === 3 ? 187 : 260;
   
   // Use the remapped progress value instead of raw scrollYProgress
   const x = useTransform(progress, [0, 1], [startX, 0]);
@@ -104,7 +104,7 @@ export default function ProjectsDashboard() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"], // Track entire visibility lifecycle
+    offset: ["start 90%", "start 10%"], // Assemble fully before reaching the top
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -113,13 +113,23 @@ export default function ProjectsDashboard() {
     restDelta: 0.001
   });
 
-  // Map progress to assemble when entering, hold in middle, and disassemble when leaving.
-  const progress = useTransform(smoothProgress, [0.1, 0.4, 0.6, 0.9], [0, 1, 1, 0]);
+  // Map progress directly to smoothProgress, capping it at 1 so it stays assembled
+  const progress = useTransform(smoothProgress, [0, 1], [0, 1]);
 
   const headerY = useTransform(progress, [0, 1], [50, 0]);
   const headerOpacity = useTransform(progress, [0, 1], [0, 1]);
 
   const projects = [
+    {
+      title: "tubeTalks-YouTube QA Bot",
+      tags: ["Next.js", "Node.js", "MongoDB", "Gemini AI"],
+      size: "md:col-span-2",
+      metric: <AnimatedMetric value={100} suffix="%" label="Automated video comprehension" />,
+      description: [
+        "Developed a full-stack application that extracts YouTube transcripts and uses Google's Gemini AI to answer user queries.",
+        "Built with a Next.js frontend and an Express backend, leveraging MongoDB for data persistence."
+      ]
+    },
     {
       title: "Lead to Ledger (PMS)",
       tags: ["Next.js", "MongoDB", "Vercel"],
@@ -128,20 +138,6 @@ export default function ProjectsDashboard() {
       description: [
         "Programmed a custom Project Management System to digitize enterprise workflows, currently serving 6+ active users.",
         "Managed processing and storage for 200+ secure records spanning project, task, and financial modules."
-      ]
-    },
-    {
-      title: "CraftyCure ECommerce",
-      tags: ["React.js", "Node.js", "MySQL", "Razorpay"],
-      size: "md:col-span-1",
-      metric: (
-        <div className="mt-3">
-          <span className="text-xs text-gray-500 font-medium block mb-1">35+ Concurrent Users</span>
-          <AnimatedGraph />
-        </div>
-      ),
-      description: [
-        "Built a full-stack digital marketplace for handmade goods featuring live order tracking and a dedicated seller dashboard."
       ]
     },
     {
@@ -154,9 +150,23 @@ export default function ProjectsDashboard() {
       ]
     },
     {
+      title: "CraftyCure ECommerce",
+      tags: ["React.js", "Node.js", "MySQL", "Razorpay"],
+      size: "md:col-span-2",
+      metric: (
+        <div className="mt-3">
+          <span className="text-xs text-gray-500 font-medium block mb-1">35+ Concurrent Users</span>
+          <AnimatedGraph />
+        </div>
+      ),
+      description: [
+        "Built a full-stack digital marketplace for handmade goods featuring live order tracking and a dedicated seller dashboard."
+      ]
+    },
+    {
       title: "AI Healthcare Chatbot",
       tags: ["Python", "Scikit-Learn", "NLP"],
-      size: "md:col-span-2",
+      size: "md:col-span-1",
       metric: <AnimatedMetric value={85} suffix="%+" label="Intent classification accuracy" />,
       description: [
         "Deployed an NLP-driven chatbot tailored to triage patient inquiries across 10+ medical categories.",
@@ -169,7 +179,7 @@ export default function ProjectsDashboard() {
     <section 
       id="projects" 
       ref={containerRef} 
-      className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full" 
+      className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full snap-start" 
       style={{ perspective: "1200px" }}
     >
       <motion.div 
@@ -180,7 +190,7 @@ export default function ProjectsDashboard() {
         <p className="text-gray-600 text-xs">Selected works and applications.</p>
       </motion.div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {projects.map((project, i) => (
           <ProjectCard key={i} project={project} i={i} progress={progress} />
         ))}

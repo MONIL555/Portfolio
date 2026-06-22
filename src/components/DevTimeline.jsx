@@ -266,6 +266,7 @@ export default function DevTimeline() {
   return (
     <section
       ref={sectionRef}
+      className="snap-start"
       style={{
         height: `${COUNT * 80}vh`, 
         background: "var(--color-canvas, #FAF8F5)",

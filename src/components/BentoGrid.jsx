@@ -10,7 +10,7 @@ export default function BentoGrid() {
   const cardViewport = { once: true, margin: "-10%" };
 
   return (
-    <section id="experience" className="min-h-screen flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 max-w-7xl mx-auto w-full">
+    <section id="experience" className="min-h-screen flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 max-w-7xl mx-auto w-full snap-start">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

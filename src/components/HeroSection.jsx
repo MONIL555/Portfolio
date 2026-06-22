@@ -160,7 +160,7 @@ export default function HeroSection() {
     <section
       id="home"
       ref={containerRef}
-      className="relative w-full min-h-screen flex flex-col justify-center items-center pt-24 pb-10 px-5 md:px-12 lg:px-16 overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col justify-center items-center pt-24 pb-10 px-5 md:px-12 lg:px-16 overflow-hidden snap-start"
       style={{ background: "#FAF8F5" }}
     >
       {/* ── Dot pattern background ── */}

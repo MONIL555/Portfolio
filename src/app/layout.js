@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} font-sans h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} font-sans h-full antialiased scroll-smooth snap-y snap-mandatory`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

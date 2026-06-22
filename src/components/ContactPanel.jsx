@@ -71,7 +71,7 @@ function AnimatedEmailCard() {
 
 export default function ContactPanel() {
   return (
-    <section id="contact" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full overflow-hidden">
+    <section id="contact" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full overflow-hidden snap-start">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
