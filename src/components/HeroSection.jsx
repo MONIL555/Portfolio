@@ -308,17 +308,20 @@ export default function HeroSection() {
 
           {/* Main Massive Typography */}
           <div className="relative z-10 flex flex-col items-center mix-blend-multiply">
-            <h1
+            <h1 className="sr-only">Monil Solanki, Full-Stack Developer</h1>
+            <div
+              aria-hidden="true"
               className="font-[family-name:var(--font-space-grotesk)] font-black tracking-[-0.05em] leading-[0.85] text-[15vw] md:text-[10vw] lg:text-[8.5rem] uppercase"
               style={{ color: "#0f0f0f" }}
             >
               <SplitText text="Monil" />
-            </h1>
-            <h1
+            </div>
+            <div
+              aria-hidden="true"
               className="font-[family-name:var(--font-space-grotesk)] font-black tracking-[-0.05em] leading-[0.85] text-[15vw] md:text-[10vw] lg:text-[8.5rem] uppercase -mt-2 md:-mt-6 text-gray-400"
             >
               <SplitText text="Solanki" />
-            </h1>
+            </div>
           </div>
 
           {/* Subtext */}
