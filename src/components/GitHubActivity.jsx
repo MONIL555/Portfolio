@@ -46,12 +46,26 @@ function AnimatedCounter({ value, suffix = "", label, icon }) {
 }
 
 /* ── Contribution Grid ── */
-function ContributionGrid() {
+function ContributionGrid({ contributions }) {
   const weeks = 26;
   const days = 7;
 
-  // Generate deterministic-looking pattern
-  const getIntensity = (week, day) => {
+  const recentWeeks = contributions && contributions.length > 0 
+    ? contributions.slice(-weeks) 
+    : [];
+
+  const getIntensityFromLevel = (level) => {
+    switch(level) {
+      case 'FIRST_QUARTILE': return 1;
+      case 'SECOND_QUARTILE': return 2;
+      case 'THIRD_QUARTILE': return 3;
+      case 'FOURTH_QUARTILE': return 4;
+      default: return 0;
+    }
+  };
+
+  // Fallback deterministic pattern if API fails
+  const getIntensityFallback = (week, day) => {
     const seed = (week * 7 + day) * 2654435761;
     const hash = ((seed >>> 0) % 100);
     if (hash < 30) return 0;
@@ -93,24 +107,46 @@ function ContributionGrid() {
 
       {/* Grid */}
       <div className="flex gap-[3px] overflow-hidden">
-        {Array.from({ length: weeks }).map((_, w) => (
-          <div key={w} className="flex flex-col gap-[3px]">
-            {Array.from({ length: days }).map((_, d) => (
-              <motion.div
-                key={d}
-                initial={{ scale: 0, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                transition={{
-                  duration: 0.3,
-                  delay: (w * days + d) * 0.002,
-                  ease: "easeOut",
-                }}
-                viewport={{ once: true }}
-                className={`w-[10px] h-[10px] md:w-[13px] md:h-[13px] rounded-[2px] ${intensityColors[getIntensity(w, d)]} transition-colors hover:ring-2 hover:ring-gray-300`}
-              />
-            ))}
-          </div>
-        ))}
+        {recentWeeks.length > 0 ? (
+          recentWeeks.map((weekData, w) => (
+            <div key={w} className="flex flex-col gap-[3px]">
+              {weekData.map((dayData, d) => (
+                <motion.div
+                  key={d}
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: (w * days + d) * 0.002,
+                    ease: "easeOut",
+                  }}
+                  viewport={{ once: true }}
+                  className={`w-[10px] h-[10px] md:w-[13px] md:h-[13px] rounded-[2px] ${intensityColors[getIntensityFromLevel(dayData.contributionLevel)]} transition-colors hover:ring-2 hover:ring-gray-300`}
+                  title={`${dayData.contributionCount} contributions on ${dayData.date}`}
+                />
+              ))}
+            </div>
+          ))
+        ) : (
+          Array.from({ length: weeks }).map((_, w) => (
+            <div key={w} className="flex flex-col gap-[3px]">
+              {Array.from({ length: days }).map((_, d) => (
+                <motion.div
+                  key={d}
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  transition={{
+                    duration: 0.3,
+                    delay: (w * days + d) * 0.002,
+                    ease: "easeOut",
+                  }}
+                  viewport={{ once: true }}
+                  className={`w-[10px] h-[10px] md:w-[13px] md:h-[13px] rounded-[2px] ${intensityColors[getIntensityFallback(w, d)]} transition-colors hover:ring-2 hover:ring-gray-300`}
+                />
+              ))}
+            </div>
+          ))
+        )}
       </div>
 
       {/* Legend */}
@@ -160,6 +196,96 @@ function FocusCard({ title, desc, tags, delay = 0 }) {
 
 /* ── Main Component ── */
 export default function GitHubActivity() {
+  const [stats, setStats] = useState({
+    repos: 15,
+    commits: 580,
+    languages: 6,
+    stars: 3,
+    contributions: [],
+    topLanguages: [
+      { name: "JavaScript", pct: 45, color: "#F7DF1E" },
+      { name: "Python", pct: 18, color: "#3776AB" },
+      { name: "TypeScript", pct: 15, color: "#3178C6" },
+      { name: "HTML/CSS", pct: 14, color: "#E34F26" },
+      { name: "Other", pct: 8, color: "#D1D5DB" },
+    ]
+  });
+
+  useEffect(() => {
+    async function fetchGitHubData() {
+      try {
+        const username = 'monil555';
+        
+        const [userRes, reposRes, contribsRes] = await Promise.all([
+          fetch(`https://api.github.com/users/${username}`),
+          fetch(`https://api.github.com/users/${username}/repos?per_page=100`),
+          fetch(`https://github-contributions-api.deno.dev/${username}.json`)
+        ]);
+
+        if (userRes.ok && reposRes.ok) {
+          const user = await userRes.json();
+          const repos = await reposRes.json();
+          
+          let commitsCount = stats.commits;
+          let contributionsData = [];
+          if (contribsRes.ok) {
+            const contribData = await contribsRes.json();
+            commitsCount = contribData.totalContributions;
+            contributionsData = contribData.contributions;
+          }
+
+          const reposCount = user.public_repos;
+          const starsCount = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+          
+          const langCounts = {};
+          let totalReposWithLang = 0;
+          repos.forEach(repo => {
+            if (repo.language) {
+              langCounts[repo.language] = (langCounts[repo.language] || 0) + 1;
+              totalReposWithLang++;
+            }
+          });
+
+          const languagesCount = Object.keys(langCounts).length;
+          
+          const colors = {
+            JavaScript: '#F7DF1E',
+            Python: '#3776AB',
+            TypeScript: '#3178C6',
+            'HTML/CSS': '#E34F26',
+            Other: '#D1D5DB'
+          };
+
+          let topLanguages = Object.entries(langCounts)
+            .map(([name, count]) => ({
+              name,
+              pct: Math.round((count / totalReposWithLang) * 100),
+              color: colors[name] || '#D1D5DB'
+            }))
+            .sort((a, b) => b.pct - a.pct);
+
+          if (topLanguages.length === 0) {
+             topLanguages = stats.topLanguages;
+          }
+
+          setStats({
+            repos: reposCount,
+            stars: starsCount,
+            languages: languagesCount,
+            commits: commitsCount,
+            contributions: contributionsData,
+            topLanguages
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching GitHub data:", error);
+      }
+    }
+
+    fetchGitHubData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <section
       id="activity"
@@ -182,15 +308,15 @@ export default function GitHubActivity() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
-        <AnimatedCounter value={15} suffix="+" label="Repos" icon="📦" />
-        <AnimatedCounter value={580} suffix="+" label="Commits" icon="🔥" />
-        <AnimatedCounter value={6} suffix="" label="Languages" icon="💻" />
-        <AnimatedCounter value={3} suffix="+" label="Open Source" icon="🌐" />
+        <AnimatedCounter value={stats.repos} suffix="" label="Repos" icon="📦" />
+        <AnimatedCounter value={stats.commits} suffix="" label="Commits" icon="🔥" />
+        <AnimatedCounter value={stats.languages} suffix="" label="Languages" icon="💻" />
+        <AnimatedCounter value={stats.stars} suffix="" label="Stars" icon="⭐" />
       </div>
 
       {/* Grid: Contribution + Focus Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <ContributionGrid />
+        <ContributionGrid contributions={stats.contributions} />
 
         <FocusCard
           title="AI-Powered Web Apps"
@@ -212,13 +338,7 @@ export default function GitHubActivity() {
           Top Languages
         </p>
         <div className="flex rounded-full overflow-hidden h-3 w-full">
-          {[
-            { name: "JavaScript", pct: 45, color: "#F7DF1E" },
-            { name: "Python", pct: 18, color: "#3776AB" },
-            { name: "TypeScript", pct: 15, color: "#3178C6" },
-            { name: "HTML/CSS", pct: 14, color: "#E34F26" },
-            { name: "Other", pct: 8, color: "#D1D5DB" },
-          ].map((lang, i) => (
+          {stats.topLanguages.map((lang, i) => (
             <motion.div
               key={i}
               initial={{ width: 0 }}
@@ -232,20 +352,14 @@ export default function GitHubActivity() {
           ))}
         </div>
         <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
-          {[
-            { name: "JavaScript", color: "#F7DF1E", pct: "45%" },
-            { name: "Python", color: "#3776AB", pct: "18%" },
-            { name: "TypeScript", color: "#3178C6", pct: "15%" },
-            { name: "HTML/CSS", color: "#E34F26", pct: "14%" },
-            { name: "Other", color: "#D1D5DB", pct: "8%" },
-          ].map((lang, i) => (
+          {stats.topLanguages.map((lang, i) => (
             <div key={i} className="flex items-center gap-1.5">
               <div
                 className="w-2 h-2 rounded-full"
                 style={{ backgroundColor: lang.color }}
               />
               <span className="text-[10px] text-gray-600 font-medium">
-                {lang.name} {lang.pct}
+                {lang.name} {lang.pct}%
               </span>
             </div>
           ))}
