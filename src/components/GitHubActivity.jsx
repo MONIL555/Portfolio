@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView, useScroll, useTransform, useSpring } from "framer-motion";
+import SectionBackground from "./SectionBackground";
 
 /* ── Animated Counter ── */
 function AnimatedCounter({ value, suffix = "", label, icon }) {
@@ -47,8 +48,15 @@ function AnimatedCounter({ value, suffix = "", label, icon }) {
 
 /* ── Contribution Grid ── */
 function ContributionGrid({ contributions }) {
+  const scrollContainerRef = useRef(null);
   const weeks = 26;
   const days = 7;
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft = scrollContainerRef.current.scrollWidth;
+    }
+  }, [contributions]);
 
   const recentWeeks = contributions && contributions.length > 0 
     ? contributions.slice(-weeks) 
@@ -106,7 +114,10 @@ function ContributionGrid({ contributions }) {
       </div>
 
       {/* Grid */}
-      <div className="flex gap-[3px] overflow-hidden">
+      <div 
+        ref={scrollContainerRef}
+        className="flex gap-[3px] overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      >
         {recentWeeks.length > 0 ? (
           recentWeeks.map((weekData, w) => (
             <div key={w} className="flex flex-col gap-[3px]">
@@ -289,82 +300,86 @@ export default function GitHubActivity() {
   return (
     <section
       id="activity"
-      className="min-h-screen flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 max-w-7xl mx-auto w-full snap-start"
+      className="relative min-h-screen w-full flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 snap-start overflow-hidden"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true, margin: "-10%" }}
-        className="mb-8 mt-8 md:mt-0"
-      >
-        <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-2">
-          Developer Activity
-        </h2>
-        <p className="text-gray-600 text-xs">
-          A snapshot of my coding habits and current focus areas.
-        </p>
-      </motion.div>
+      <SectionBackground colors={["rgba(161, 196, 253, 0.6)", "rgba(142, 197, 252, 0.6)", "rgba(245, 247, 250, 0.6)"]} />
+      
+      <div className="max-w-7xl mx-auto w-full relative z-10 flex flex-col">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          viewport={{ once: true, margin: "-10%" }}
+          className="mb-8 mt-8 md:mt-0"
+        >
+          <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-2">
+            Developer Activity
+          </h2>
+          <p className="text-gray-600 text-xs">
+            A snapshot of my coding habits and current focus areas.
+          </p>
+        </motion.div>
 
-      {/* Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
-        <AnimatedCounter value={stats.repos} suffix="" label="Repos" icon="📦" />
-        <AnimatedCounter value={stats.commits} suffix="" label="Commits" icon="🔥" />
-        <AnimatedCounter value={stats.languages} suffix="" label="Languages" icon="💻" />
-        <AnimatedCounter value={stats.stars} suffix="" label="Stars" icon="⭐" />
-      </div>
-
-      {/* Grid: Contribution + Focus Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <ContributionGrid contributions={stats.contributions} />
-
-        <FocusCard
-          title="AI-Powered Web Apps"
-          desc="Exploring LLM integrations with Next.js and building intelligent user experiences powered by Gemini & OpenAI APIs."
-          tags={["Gemini AI", "Next.js", "LangChain"]}
-          delay={0.1}
-        />
-      </div>
-
-      {/* Languages bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.3 }}
-        viewport={{ once: true }}
-        className="glass-panel rounded-3xl p-5 mt-5 shadow-sm"
-      >
-        <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400 font-[family-name:var(--font-space-grotesk)] mb-3">
-          Top Languages
-        </p>
-        <div className="flex rounded-full overflow-hidden h-3 w-full">
-          {stats.topLanguages.map((lang, i) => (
-            <motion.div
-              key={i}
-              initial={{ width: 0 }}
-              whileInView={{ width: `${lang.pct}%` }}
-              transition={{ duration: 1, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              viewport={{ once: true }}
-              className="h-full"
-              style={{ backgroundColor: lang.color }}
-              title={`${lang.name}: ${lang.pct}%`}
-            />
-          ))}
+        {/* Stats Row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+          <AnimatedCounter value={stats.repos} suffix="" label="Repos" icon="📦" />
+          <AnimatedCounter value={stats.commits} suffix="" label="Commits" icon="🔥" />
+          <AnimatedCounter value={stats.languages} suffix="" label="Languages" icon="💻" />
+          <AnimatedCounter value={stats.stars} suffix="" label="Stars" icon="⭐" />
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
-          {stats.topLanguages.map((lang, i) => (
-            <div key={i} className="flex items-center gap-1.5">
-              <div
-                className="w-2 h-2 rounded-full"
+
+        {/* Grid: Contribution + Focus Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <ContributionGrid contributions={stats.contributions} />
+
+          <FocusCard
+            title="AI-Powered Web Apps"
+            desc="Exploring LLM integrations with Next.js and building intelligent user experiences powered by Gemini & OpenAI APIs."
+            tags={["Gemini AI", "Next.js", "LangChain"]}
+            delay={0.1}
+          />
+        </div>
+
+        {/* Languages bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="glass-panel rounded-3xl p-5 mt-5 shadow-sm"
+        >
+          <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400 font-[family-name:var(--font-space-grotesk)] mb-3">
+            Top Languages
+          </p>
+          <div className="flex rounded-full overflow-hidden h-3 w-full">
+            {stats.topLanguages.map((lang, i) => (
+              <motion.div
+                key={i}
+                initial={{ width: 0 }}
+                whileInView={{ width: `${lang.pct}%` }}
+                transition={{ duration: 1, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true }}
+                className="h-full"
                 style={{ backgroundColor: lang.color }}
+                title={`${lang.name}: ${lang.pct}%`}
               />
-              <span className="text-[10px] text-gray-600 font-medium">
-                {lang.name} {lang.pct}%
-              </span>
-            </div>
-          ))}
-        </div>
-      </motion.div>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
+            {stats.topLanguages.map((lang, i) => (
+              <div key={i} className="flex items-center gap-1.5">
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: lang.color }}
+                />
+                <span className="text-[10px] text-gray-600 font-medium">
+                  {lang.name} {lang.pct}%
+                </span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </section>
   );
 }

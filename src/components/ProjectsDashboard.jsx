@@ -2,6 +2,7 @@
 import { ExternalLink } from "lucide-react";
 import { motion, useInView, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import SectionBackground from "./SectionBackground";
 
 function AnimatedMetric({ value, label, suffix = "", duration = 2 }) {
   const [count, setCount] = useState(0);
@@ -179,21 +180,25 @@ export default function ProjectsDashboard() {
     <section 
       id="projects" 
       ref={containerRef} 
-      className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full snap-start" 
+      className="relative min-h-screen w-full flex flex-col justify-center pt-24 pb-10 px-8 md:px-16 snap-start overflow-hidden" 
       style={{ perspective: "1200px" }}
     >
-      <motion.div 
-        style={{ y: headerY, opacity: headerOpacity }}
-        className="mb-6 mt-8 md:mt-0"
-      >
-        <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Projects Dashboard</h2>
-        <p className="text-gray-600 text-xs">Selected works and applications.</p>
-      </motion.div>
+      <SectionBackground colors={["rgba(255, 154, 158, 0.6)", "rgba(254, 207, 239, 0.6)", "rgba(255, 240, 245, 0.6)"]} />
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {projects.map((project, i) => (
-          <ProjectCard key={i} project={project} i={i} progress={progress} />
-        ))}
+      <div className="max-w-[90rem] mx-auto w-full relative z-10">
+        <motion.div 
+          style={{ y: headerY, opacity: headerOpacity }}
+          className="mb-6 mt-8 md:mt-0"
+        >
+          <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-1">Projects Dashboard</h2>
+          <p className="text-gray-600 text-xs">Selected works and applications.</p>
+        </motion.div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {projects.map((project, i) => (
+            <ProjectCard key={i} project={project} i={i} progress={progress} />
+          ))}
+        </div>
       </div>
     </section>
   );

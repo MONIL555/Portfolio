@@ -1,6 +1,7 @@
 "use client";
-import { useRef, useEffect, useCallback } from "react";
+import { useRef, useEffect } from "react";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import SectionBackground from "./SectionBackground";
 
 const DATA = [
   {
@@ -266,15 +267,13 @@ export default function DevTimeline() {
   return (
     <section
       ref={sectionRef}
-      className="snap-start"
+      className="snap-start relative w-full"
       style={{
-        height: `${COUNT * 80}vh`, 
-        background: "var(--color-canvas, #FAF8F5)",
-        position: "relative",
-        overflowX: "clip",
-        width: "100%",
+        height: `${COUNT * 80}vh`,
+        overflowX: "clip"
       }}
     >
+      <SectionBackground colors={["rgba(168, 237, 234, 0.6)", "rgba(254, 214, 227, 0.6)", "rgba(255, 240, 245, 0.6)"]} />
       <div
         ref={stickyRef}
         style={{

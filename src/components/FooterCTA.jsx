@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ExternalLink, Mail, Phone } from "lucide-react";
+import SectionBackground from "./SectionBackground";
 
 const GithubIcon = ({ className }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className={className}>
@@ -40,7 +41,7 @@ function AnimatedEmailCard() {
       transition={{ duration: 0.8, ease: "easeOut" }}
       viewport={{ once: true, margin: "-10%" }}
       onClick={handleCopy} 
-      className="bg-white border border-gray-100 rounded-2xl p-4 md:p-5 flex flex-col justify-between group cursor-pointer hover:bg-gray-50 transition-all duration-300 relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
+      className="glass-panel border border-gray-100/50 rounded-2xl p-4 md:p-5 flex flex-col justify-between group cursor-pointer transition-all duration-300 relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
     >      
       <div className="relative z-10">
         <div className="flex justify-between items-start mb-2 md:mb-3">
@@ -83,7 +84,9 @@ function AnimatedEmailCard() {
 
 export default function FooterCTA() {
   return (
-    <footer id="contact" className="relative w-full bg-[#fcfcfc] text-black overflow-hidden snap-start h-[100dvh] flex flex-col justify-between pt-[70px] md:pt-[80px]">
+    <footer id="contact" className="relative w-full text-black overflow-hidden snap-start h-[100dvh] flex flex-col justify-between pt-[70px] md:pt-[80px]">
+      <SectionBackground colors={["rgba(255, 209, 209, 0.6)", "rgba(142, 197, 252, 0.6)", "rgba(224, 243, 255, 0.6)"]} />
+      
       {/* Animated gradient top border */}
       <div
         className="w-full h-px absolute top-0 left-0"
@@ -138,7 +141,7 @@ export default function FooterCTA() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true, margin: "-10%" }}
               href="tel:+919016460198" 
-              className="bg-white border border-gray-100 rounded-2xl p-4 md:p-5 flex flex-col justify-between group cursor-pointer hover:bg-gray-50 transition-all duration-300 relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
+              className="glass-panel border border-gray-100/50 rounded-2xl p-4 md:p-5 flex flex-col justify-between group cursor-pointer transition-all duration-300 relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
             >
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-2 md:mb-3">
@@ -164,7 +167,7 @@ export default function FooterCTA() {
               whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               viewport={{ once: true, margin: "-10%" }}
-              className="bg-white border border-gray-100 rounded-2xl p-4 md:p-5 flex flex-col justify-between group relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
+              className="glass-panel border border-gray-100/50 rounded-2xl p-4 md:p-5 flex flex-col justify-between group relative overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]"
             >
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-2 md:mb-3">

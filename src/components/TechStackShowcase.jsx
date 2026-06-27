@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import SectionBackground from "./SectionBackground";
 
 /* ── Skill Data ── */
 const SKILLS = [
@@ -312,9 +313,10 @@ export default function TechStackShowcase() {
   return (
     <section
       id="skills"
-      className="h-[100dvh] w-full flex flex-col relative overflow-hidden bg-[var(--color-canvas,#FAF8F5)] snap-start"
-      style={{ background: "var(--color-canvas, #FAF8F5)" }}
+      className="h-[100dvh] w-full flex flex-col relative overflow-hidden snap-start"
     >
+      <SectionBackground colors={["rgba(224, 255, 255, 0.6)", "rgba(142, 197, 252, 0.6)", "rgba(254, 207, 239, 0.6)"]} />
+      
       {/* Decorative blurred orbs */}
       <div
         className="absolute pointer-events-none opacity-[0.18]"

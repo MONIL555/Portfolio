@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, ChevronDown, Code2, Database, Terminal, Layers, Cpu, Globe, Monitor } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
+import SectionBackground from "./SectionBackground";
 
 /* ── Magnetic Wrapper Component ── */
 function MagneticWrapper({ children, className, ...props }) {
@@ -161,11 +162,12 @@ export default function HeroSection() {
       id="home"
       ref={containerRef}
       className="relative w-full min-h-screen flex flex-col justify-center items-center pt-24 pb-10 px-5 md:px-12 lg:px-16 overflow-hidden snap-start"
-      style={{ background: "#FAF8F5" }}
     >
+      <SectionBackground colors={["rgba(255, 209, 209, 0.6)", "rgba(224, 195, 252, 0.6)", "rgba(168, 237, 234, 0.6)"]} />
+
       {/* ── Dot pattern background ── */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-30"
+        className="absolute inset-0 pointer-events-none opacity-30 z-0"
         style={{
           backgroundImage: "radial-gradient(circle, #c8c0b4 0.04rem, transparent 0.04rem)",
           backgroundSize: "1.6rem 1.6rem",
