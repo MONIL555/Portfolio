@@ -69,7 +69,7 @@ function ProjectCard({ project, i, progress }) {
   return (
     <motion.div 
       style={{ x, y, rotateX, scale, opacity, filter }}
-      className={`glass-panel rounded-3xl p-5 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size}`}
+      className={`glass-panel rounded-2xl p-4 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size || ''}`}
     >
       <div>
         <div className="flex justify-between items-start mb-1">
@@ -80,7 +80,7 @@ function ProjectCard({ project, i, progress }) {
         </div>
         {project.metric}
         
-        <ul className="mt-3 space-y-2 text-gray-600 text-xs leading-relaxed">
+        <ul className="mt-2 space-y-1.5 text-gray-600 text-[11px] leading-relaxed">
           {project.description.map((desc, index) => (
             <li key={index} className="flex items-start gap-2">
               <span className="w-1 h-1 rounded-full bg-black/40 mt-1.5 flex-shrink-0"></span>
@@ -90,7 +90,7 @@ function ProjectCard({ project, i, progress }) {
         </ul>
       </div>
       
-      <div className="flex flex-wrap gap-2 mt-4">
+      <div className="flex flex-wrap gap-1.5 mt-3">
         {project.tags.map((tag, j) => (
           <span key={j} className="px-3 py-1 bg-white/60 backdrop-blur-md rounded-full text-[10px] md:text-[11px] font-medium border border-white/40 text-gray-700">
             {tag}
@@ -122,9 +122,19 @@ export default function ProjectsDashboard() {
 
   const projects = [
     {
+      title: "SpotTunes (Spotify Clone)",
+      tags: ["Next.js", "Tailwind CSS", "MongoDB", "YouTube API"],
+      size: "md:col-span-1",
+      metric: <AnimatedMetric value={100} suffix="%" label="Seamless audio streaming" />,
+      description: [
+        "Built a modern, high-performance web music player enabling users to search and play almost any song available on YouTube.",
+        "Implemented real-time synchronized lyrics, custom playlist management, and a personalized home page with recommendations."
+      ]
+    },
+    {
       title: "tubeTalks-YouTube QA Bot",
       tags: ["Next.js", "Node.js", "MongoDB", "Gemini AI"],
-      size: "md:col-span-2",
+      size: "md:col-span-1",
       metric: <AnimatedMetric value={100} suffix="%" label="Automated video comprehension" />,
       description: [
         "Developed a full-stack application that extracts YouTube transcripts and uses Google's Gemini AI to answer user queries.",
@@ -134,7 +144,7 @@ export default function ProjectsDashboard() {
     {
       title: "Lead to Ledger (PMS)",
       tags: ["Next.js", "MongoDB", "Vercel"],
-      size: "md:col-span-2",
+      size: "md:col-span-1",
       metric: <AnimatedMetric value={40} suffix="%" label="Reduction in manual data entry" />,
       description: [
         "Programmed a custom Project Management System to digitize enterprise workflows, currently serving 6+ active users.",
@@ -153,7 +163,7 @@ export default function ProjectsDashboard() {
     {
       title: "CraftyCure ECommerce",
       tags: ["React.js", "Node.js", "MySQL", "Razorpay"],
-      size: "md:col-span-2",
+      size: "md:col-span-1",
       metric: (
         <div className="mt-3">
           <span className="text-xs text-gray-500 font-medium block mb-1">35+ Concurrent Users</span>
@@ -180,7 +190,7 @@ export default function ProjectsDashboard() {
     <section 
       id="projects" 
       ref={containerRef} 
-      className="relative min-h-screen w-full flex flex-col justify-center pt-24 pb-10 px-8 md:px-16 snap-start overflow-hidden" 
+      className="relative min-h-screen w-full flex flex-col justify-center pt-20 pb-6 px-8 md:px-16 snap-start overflow-hidden" 
       style={{ perspective: "1200px" }}
     >
       <SectionBackground colors={["rgba(255, 154, 158, 0.6)", "rgba(254, 207, 239, 0.6)", "rgba(255, 240, 245, 0.6)"]} />
@@ -194,7 +204,7 @@ export default function ProjectsDashboard() {
           <p className="text-gray-600 text-xs">Selected works and applications.</p>
         </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
           {projects.map((project, i) => (
             <ProjectCard key={i} project={project} i={i} progress={progress} />
           ))}

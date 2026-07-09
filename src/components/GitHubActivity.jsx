@@ -31,9 +31,9 @@ function AnimatedCounter({ value, suffix = "", label, icon }) {
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.7, ease: "easeOut" }}
       viewport={{ once: true, margin: "-10%" }}
-      className="glass-panel rounded-3xl p-5 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
+      className="glass-panel rounded-2xl p-4 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
     >
-      <div className="flex justify-between items-start mb-3">
+      <div className="flex justify-between items-start mb-2">
         <span className="text-2xl">{icon}</span>
         <span className="text-[10px] font-bold tracking-widest uppercase text-gray-400 font-[family-name:var(--font-space-grotesk)]">
           {label}
@@ -97,9 +97,9 @@ function ContributionGrid({ contributions }) {
       whileInView={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
       viewport={{ once: true, margin: "-10%" }}
-      className="glass-panel rounded-3xl p-5 md:p-6 md:col-span-2 shadow-sm"
+      className="glass-panel rounded-2xl p-4 md:p-5 md:col-span-2 shadow-sm"
     >
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-between items-start mb-3">
         <div>
           <h3 className="text-sm font-bold font-[family-name:var(--font-space-grotesk)] mb-1">
             Coding Activity
@@ -161,7 +161,7 @@ function ContributionGrid({ contributions }) {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-1.5 mt-3 justify-end">
+      <div className="flex items-center gap-1.5 mt-2 justify-end">
         <span className="text-[9px] text-gray-400 mr-1">Less</span>
         {intensityColors.map((color, i) => (
           <div key={i} className={`w-[10px] h-[10px] rounded-[2px] ${color}`} />
@@ -180,18 +180,18 @@ function FocusCard({ title, desc, tags, delay = 0 }) {
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.7, ease: "easeOut", delay }}
       viewport={{ once: true, margin: "-10%" }}
-      className="glass-panel rounded-3xl p-5 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
+      className="glass-panel rounded-2xl p-4 flex flex-col justify-between group hover:bg-white/50 transition-colors shadow-sm"
     >
       <div>
-        <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400 font-[family-name:var(--font-space-grotesk)] mb-2">
+        <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400 font-[family-name:var(--font-space-grotesk)] mb-1.5">
           Current Focus
         </p>
-        <h3 className="text-sm font-bold font-[family-name:var(--font-space-grotesk)] leading-tight mb-2">
+        <h3 className="text-sm font-bold font-[family-name:var(--font-space-grotesk)] leading-tight mb-1.5">
           {title}
         </h3>
-        <p className="text-xs text-gray-600 leading-relaxed">{desc}</p>
+        <p className="text-[11px] text-gray-600 leading-relaxed">{desc}</p>
       </div>
-      <div className="flex flex-wrap gap-2 mt-4">
+      <div className="flex flex-wrap gap-1.5 mt-3">
         {tags.map((tag, i) => (
           <span
             key={i}
@@ -300,7 +300,7 @@ export default function GitHubActivity() {
   return (
     <section
       id="activity"
-      className="relative min-h-screen w-full flex flex-col justify-center pt-20 pb-10 px-8 md:px-16 snap-start overflow-hidden"
+      className="relative min-h-screen w-full flex flex-col justify-center pt-20 pb-6 px-8 md:px-16 snap-start overflow-hidden"
     >
       <SectionBackground colors={["rgba(161, 196, 253, 0.6)", "rgba(142, 197, 252, 0.6)", "rgba(245, 247, 250, 0.6)"]} />
       
@@ -310,7 +310,7 @@ export default function GitHubActivity() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           viewport={{ once: true, margin: "-10%" }}
-          className="mb-8 mt-8 md:mt-0"
+          className="mb-5 mt-6 md:mt-0"
         >
           <h2 className="text-base md:text-lg font-bold font-[family-name:var(--font-space-grotesk)] mb-2">
             Developer Activity
@@ -321,7 +321,7 @@ export default function GitHubActivity() {
         </motion.div>
 
         {/* Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <AnimatedCounter value={stats.repos} suffix="" label="Repos" icon="📦" />
           <AnimatedCounter value={stats.commits} suffix="" label="Commits" icon="🔥" />
           <AnimatedCounter value={stats.languages} suffix="" label="Languages" icon="💻" />
@@ -329,7 +329,7 @@ export default function GitHubActivity() {
         </div>
 
         {/* Grid: Contribution + Focus Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <ContributionGrid contributions={stats.contributions} />
 
           <FocusCard
@@ -346,9 +346,9 @@ export default function GitHubActivity() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
           viewport={{ once: true }}
-          className="glass-panel rounded-3xl p-5 mt-5 shadow-sm"
+          className="glass-panel rounded-2xl p-4 mt-4 shadow-sm"
         >
-          <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400 font-[family-name:var(--font-space-grotesk)] mb-3">
+          <p className="text-[10px] font-bold tracking-widest uppercase text-gray-400 font-[family-name:var(--font-space-grotesk)] mb-2">
             Top Languages
           </p>
           <div className="flex rounded-full overflow-hidden h-3 w-full">
@@ -365,7 +365,7 @@ export default function GitHubActivity() {
               />
             ))}
           </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
+          <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2.5">
             {stats.topLanguages.map((lang, i) => (
               <div key={i} className="flex items-center gap-1.5">
                 <div

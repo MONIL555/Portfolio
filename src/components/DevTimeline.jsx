@@ -169,8 +169,7 @@ function useParticles(canvasRef, rootRef) {
 }
 
 // ── Motion Card — unified single useTransform ───────────────────────
-function TimelineCard({ index, progress, data, count }) {
-  const activeFloat = useTransform(progress, [0, 1], [0, count - 1]);
+function TimelineCard({ index, activeFloat, data, count }) {
   
   // Single unified transform computation instead of 3 separate ones
   const computedStyle = useTransform(activeFloat, (a) => {
@@ -257,8 +256,11 @@ export default function DevTimeline() {
     offset: ["start start", "end end"]
   });
 
-  // Tuned spring: faster settling = fewer re-render frames
-  const smoothProgress = useSpring(scrollYProgress, {
+  const rawFloat = useTransform(scrollYProgress, [0, 1], [0, COUNT - 1]);
+  const snappedFloat = useTransform(rawFloat, (v) => Math.round(v));
+
+  // Tuned spring applied to the SNAPPED value so it always lands perfectly
+  const smoothActiveFloat = useSpring(snappedFloat, {
     stiffness: 120,
     damping: 30,
     restDelta: 0.001
@@ -269,7 +271,7 @@ export default function DevTimeline() {
       ref={sectionRef}
       className="snap-start relative w-full"
       style={{
-        height: `${COUNT * 80}vh`,
+        height: `calc(100vh + ${(COUNT - 1) * 50}px)`,
         overflowX: "clip"
       }}
     >
@@ -348,7 +350,7 @@ export default function DevTimeline() {
               <TimelineCard 
                 key={i} 
                 index={i} 
-                progress={smoothProgress} 
+                activeFloat={smoothActiveFloat} 
                 data={d} 
                 count={COUNT} 
               />
