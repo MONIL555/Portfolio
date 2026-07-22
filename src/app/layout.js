@@ -233,7 +233,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} font-sans h-full antialiased scroll-smooth snap-y snap-proximity lg:snap-mandatory`}
+      className={`${spaceGrotesk.variable} ${inter.variable} font-sans h-full antialiased scroll-smooth lg:snap-y lg:snap-mandatory`}
     >
       <head>
         <script

@@ -59,22 +59,26 @@ export default function AnimatedBackground() {
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-canvas">
       {/* 
-        Using absolute positioning, large blurred divs, and Framer Motion for background color interpolation.
+        Using absolute positioning, large radial gradient divs, and Framer Motion for background color interpolation.
         CSS animations handle the floating movement to leverage GPU acceleration via transform.
       */}
       <motion.div
-        style={{ backgroundColor: orb1Color }}
-        className="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vw] rounded-full mix-blend-multiply filter blur-[80px] md:blur-[120px] opacity-80 animate-float will-change-transform"
+        className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full opacity-40 animate-float will-change-transform"
+        style={{
+          background: useMotionTemplate`radial-gradient(circle, ${orb1Color} 0%, transparent 70%)`,
+        }}
       />
-      
       <motion.div
-        style={{ backgroundColor: orb2Color }}
-        className="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] rounded-full mix-blend-multiply filter blur-[80px] md:blur-[120px] opacity-70 animate-float-delayed will-change-transform"
+        className="absolute top-[40%] right-[-10%] w-[45vw] h-[45vw] rounded-full opacity-30 animate-float-delayed will-change-transform"
+        style={{
+          background: useMotionTemplate`radial-gradient(circle, ${orb2Color} 0%, transparent 70%)`,
+        }}
       />
-      
       <motion.div
-        style={{ backgroundColor: orb3Color }}
-        className="absolute top-[20%] left-[20%] w-[40vw] h-[40vw] rounded-full mix-blend-multiply filter blur-[80px] md:blur-[100px] opacity-60 animate-float-reverse will-change-transform"
+        className="absolute bottom-[-10%] left-[20%] w-[60vw] h-[60vw] rounded-full opacity-40 animate-float-reverse will-change-transform"
+        style={{
+          background: useMotionTemplate`radial-gradient(circle, ${orb3Color} 0%, transparent 70%)`,
+        }}
       />
       
       {/* Very subtle noise overlay for premium texture */}

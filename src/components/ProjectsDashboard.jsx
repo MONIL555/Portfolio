@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { motion, useInView, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import SectionBackground from "./SectionBackground";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 function AnimatedMetric({ value, label, suffix = "", duration = 2 }) {
   const [count, setCount] = useState(0);
@@ -54,6 +55,8 @@ function AnimatedGraph() {
 }
 
 function ProjectCard({ project, i, progress }) {
+  const isMobile = useIsMobile();
+
   const startX = i === 0 ? -324 : i === 1 ? 289 : i === 2 ? -276 : i === 3 ? 342 : -310;
   const startY = i === 0 ? -163 : i === 1 ? -214 : i === 2 ? 238 : i === 3 ? 187 : 260;
   
@@ -66,11 +69,8 @@ function ProjectCard({ project, i, progress }) {
   const blurVal = useTransform(progress, [0, 1], [10, 0]);
   const filter = useMotionTemplate`blur(${blurVal}px)`;
 
-  return (
-    <motion.div 
-      style={{ x, y, rotateX, scale, opacity, filter }}
-      className={`glass-panel rounded-2xl p-4 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size || ''}`}
-    >
+  const cardContent = (
+    <>
       <div>
         <div className="flex justify-between items-start mb-1">
           <h3 className="text-sm md:text-base font-bold font-[family-name:var(--font-space-grotesk)] leading-tight">{project.title}</h3>
@@ -97,6 +97,31 @@ function ProjectCard({ project, i, progress }) {
           </span>
         ))}
       </div>
+    </>
+  );
+
+  // Mobile bypasses the heavy scroll-linked math and filter animations
+  if (isMobile) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        viewport={{ once: true, margin: "-10%" }}
+        style={{ filter: "none", transform: "none" }}
+        className={`glass-panel rounded-2xl p-4 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size || ''}`}
+      >
+        {cardContent}
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div 
+      style={{ x, y, rotateX, scale, opacity, filter }}
+      className={`glass-panel rounded-2xl p-4 flex flex-col justify-between group cursor-pointer hover:bg-white/50 transition-colors shadow-sm ${project.size || ''}`}
+    >
+      {cardContent}
     </motion.div>
   );
 }

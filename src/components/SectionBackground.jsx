@@ -13,22 +13,23 @@ export default function SectionBackground({ colors }) {
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
       {/* 
-        Using absolute positioning, large blurred divs, and CSS animations 
+        Using absolute positioning, large pseudo-blurred divs, and CSS animations 
         to create a moving mesh gradient effect localized to this section.
+        We use radial-gradient instead of filter: blur() to eliminate GPU thrashing on mobile.
       */}
       <motion.div
-        className="absolute top-[0%] left-[10%] w-[40%] h-[40%] rounded-full mix-blend-multiply filter blur-[80px] opacity-30 animate-float will-change-transform"
-        style={{ backgroundColor: c1 }}
+        className="absolute top-[0%] left-[10%] w-[40%] h-[40%] rounded-full opacity-30 animate-float will-change-transform"
+        style={{ background: `radial-gradient(circle, ${c1} 0%, transparent 70%)` }}
       />
       
       <motion.div
-        className="absolute bottom-[10%] right-[10%] w-[35%] h-[35%] rounded-full mix-blend-multiply filter blur-[80px] opacity-20 animate-float-delayed will-change-transform"
-        style={{ backgroundColor: c2 }}
+        className="absolute bottom-[10%] right-[10%] w-[35%] h-[35%] rounded-full opacity-20 animate-float-delayed will-change-transform"
+        style={{ background: `radial-gradient(circle, ${c2} 0%, transparent 70%)` }}
       />
       
       <motion.div
-        className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full mix-blend-multiply filter blur-[80px] opacity-25 animate-float-reverse will-change-transform"
-        style={{ backgroundColor: c3 }}
+        className="absolute top-[40%] left-[40%] w-[30%] h-[30%] rounded-full opacity-25 animate-float-reverse will-change-transform"
+        style={{ background: `radial-gradient(circle, ${c3} 0%, transparent 70%)` }}
       />
       
       {/* Very subtle noise overlay for premium texture */}
