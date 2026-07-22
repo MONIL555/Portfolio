@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ExternalLink, Mail, Phone } from "lucide-react";
 import SectionBackground from "./SectionBackground";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const GithubIcon = ({ className }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className={className}>
@@ -27,6 +28,8 @@ const NAV_LINKS = [
 
 function AnimatedEmailCard() {
   const [copied, setCopied] = useState(false);
+  const isMobile = useIsMobile();
+  const blurInitial = isMobile ? "blur(0px)" : "blur(10px)";
 
   const handleCopy = () => {
     navigator.clipboard.writeText("monilsolanki30@gmail.com");
@@ -36,7 +39,7 @@ function AnimatedEmailCard() {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, x: -50, filter: "blur(10px)" }}
+      initial={{ opacity: 0, x: -50, filter: blurInitial }}
       whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       viewport={{ once: true, margin: "-10%" }}
@@ -83,6 +86,8 @@ function AnimatedEmailCard() {
 }
 
 export default function FooterCTA() {
+  const isMobile = useIsMobile();
+  const blurInitial = isMobile ? "blur(0px)" : "blur(10px)";
   return (
     <footer id="contact" className="relative w-full text-black overflow-hidden snap-start h-[100dvh] flex flex-col justify-between pt-[70px] md:pt-[80px]">
       <SectionBackground colors={["rgba(255, 209, 209, 0.6)", "rgba(142, 197, 252, 0.6)", "rgba(224, 243, 255, 0.6)"]} />
@@ -136,7 +141,7 @@ export default function FooterCTA() {
             <AnimatedEmailCard />
 
             <motion.a 
-              initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+              initial={{ opacity: 0, y: 50, filter: blurInitial }}
               whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
               viewport={{ once: true, margin: "-10%" }}
@@ -163,7 +168,7 @@ export default function FooterCTA() {
             </motion.a>
 
             <motion.div 
-              initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
+              initial={{ opacity: 0, x: 50, filter: blurInitial }}
               whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               viewport={{ once: true, margin: "-10%" }}

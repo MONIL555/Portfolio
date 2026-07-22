@@ -55,4 +55,21 @@
     border-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   }
+
+  /* Mobile: replace expensive backdrop-filter with opaque fallback */
+  @media (max-width: 1023px) {
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .glass-panel:hover {
+      background: rgba(255, 255, 255, 0.88);
+    }
+    /* Kill all inline backdrop-blur-* on mobile */
+    [class*="backdrop-blur"] {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
 }

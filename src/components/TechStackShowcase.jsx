@@ -246,8 +246,11 @@ function MobileTechStack({ skills }) {
   };
 
   return (
-    <div className="relative w-[280px] sm:w-[320px] h-[420px] flex flex-col items-center justify-center mt-[10vh]">
-      <div className="relative w-full h-full">
+    <div 
+      className="relative flex flex-col items-center justify-center mx-auto"
+      style={{ width: '280px', height: '420px', marginTop: '10vh' }}
+    >
+      <div className="relative w-full h-full flex items-center justify-center">
         <AnimatePresence>
           {cards.slice(0, 3).reverse().map((skill, i) => {
             const length = Math.min(cards.length, 3);
@@ -257,16 +260,18 @@ function MobileTechStack({ skills }) {
             return (
               <motion.div
                 key={skill.name}
-                className="absolute top-0 left-0 w-full h-full origin-bottom"
-                style={{ zIndex: i }}
+                className="absolute top-0 left-0 w-full h-full"
+                style={{ zIndex: i, transformOrigin: 'bottom center' }}
                 initial={{ 
                   scale: 1 - visualIndex * 0.05, 
                   y: visualIndex * 15, 
+                  x: 0,
                   opacity: 0 
                 }}
                 animate={{ 
                   scale: 1 - visualIndex * 0.05, 
                   y: visualIndex * 15, 
+                  x: 0,
                   opacity: 1 - visualIndex * 0.15 
                 }}
                 exit={{ 
@@ -279,6 +284,7 @@ function MobileTechStack({ skills }) {
                 drag={isTop ? "x" : false}
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.8}
+                dragSnapToOrigin={true}
                 onDragEnd={isTop ? handleDragEnd : undefined}
               >
                  <div className={`w-full h-full bg-transparent rounded-[1.4rem] ${isTop ? "cursor-grab active:cursor-grabbing" : ""}`}>
@@ -354,8 +360,10 @@ export default function TechStackShowcase() {
       </div>
 
       {/* ── Mobile Stack (visible on md and below) ── */}
-      <div className="absolute inset-x-0 bottom-0 top-[15vh] z-20 flex lg:hidden items-center justify-center overflow-hidden">
-        <MobileTechStack skills={SKILLS} />
+      <div className="absolute top-[15vh] left-0 w-full h-[85vh] z-20 flex lg:hidden flex-col items-center justify-center pointer-events-none">
+        <div className="pointer-events-auto flex flex-col items-center justify-center w-full">
+          <MobileTechStack skills={SKILLS} />
+        </div>
       </div>
 
       {/* ── Diagonal Marquee (Desktop only) ── */}

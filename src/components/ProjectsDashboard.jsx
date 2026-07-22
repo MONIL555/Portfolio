@@ -122,23 +122,23 @@ export default function ProjectsDashboard() {
 
   const projects = [
     {
-      title: "SpotTunes (Spotify Clone)",
-      tags: ["Next.js", "Tailwind CSS", "MongoDB", "YouTube API"],
+      title: "MoniStream - A Music Streaming Platform",
+      tags: ["Next.js", "Tailwind CSS", "MongoDB", "YouTube API", "Jio Saavn API"],
       size: "md:col-span-1",
       metric: <AnimatedMetric value={100} suffix="%" label="Seamless audio streaming" />,
       description: [
-        "Built a modern, high-performance web music player enabling users to search and play almost any song available on YouTube.",
+        "Built a modern, high-performance web music player enabling users to search and play almost any song available on Jio Saavn and YouTube.",
         "Implemented real-time synchronized lyrics, custom playlist management, and a personalized home page with recommendations."
       ]
     },
     {
-      title: "tubeTalks-YouTube QA Bot",
+      title: "FIY-Talks Chatbot",
       tags: ["Next.js", "Node.js", "MongoDB", "Gemini AI"],
       size: "md:col-span-1",
       metric: <AnimatedMetric value={100} suffix="%" label="Automated video comprehension" />,
       description: [
-        "Developed a full-stack application that extracts YouTube transcripts and uses Google's Gemini AI to answer user queries.",
-        "Built with a Next.js frontend and an Express backend, leveraging MongoDB for data persistence."
+        "Developed an AI-powered research assistant enabling contextual conversations across YouTube videos, Instagram posts, and local PDF documents using Google Gemini AI, with secure JWT-based authentication (access & refresh tokens) via HTTP-only cookies.",
+        "Engineered rate limiting and brute-force protection with express-rate-limit and helmet, and designed a fully responsive, glassmorphic UI."
       ]
     },
     {

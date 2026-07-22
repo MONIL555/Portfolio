@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useInView, useScroll, useTransform, useSpring } from "framer-motion";
 import SectionBackground from "./SectionBackground";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ── Animated Counter ── */
 function AnimatedCounter({ value, suffix = "", label, icon }) {
@@ -24,10 +25,13 @@ function AnimatedCounter({ value, suffix = "", label, icon }) {
     }
   }, [isInView, value]);
 
+  const isMobile = useIsMobile();
+  const blurInitial = isMobile ? "blur(0px)" : "blur(8px)";
+  
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+      initial={{ opacity: 0, y: 30, filter: blurInitial }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.7, ease: "easeOut" }}
       viewport={{ once: true, margin: "-10%" }}
@@ -122,16 +126,8 @@ function ContributionGrid({ contributions }) {
           recentWeeks.map((weekData, w) => (
             <div key={w} className="flex flex-col gap-[3px]">
               {weekData.map((dayData, d) => (
-                <motion.div
+                <div
                   key={d}
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{
-                    duration: 0.3,
-                    delay: (w * days + d) * 0.002,
-                    ease: "easeOut",
-                  }}
-                  viewport={{ once: true }}
                   className={`w-[10px] h-[10px] md:w-[13px] md:h-[13px] rounded-[2px] ${intensityColors[getIntensityFromLevel(dayData.contributionLevel)]} transition-colors hover:ring-2 hover:ring-gray-300`}
                   title={`${dayData.contributionCount} contributions on ${dayData.date}`}
                 />
@@ -142,16 +138,8 @@ function ContributionGrid({ contributions }) {
           Array.from({ length: weeks }).map((_, w) => (
             <div key={w} className="flex flex-col gap-[3px]">
               {Array.from({ length: days }).map((_, d) => (
-                <motion.div
+                <div
                   key={d}
-                  initial={{ scale: 0, opacity: 0 }}
-                  whileInView={{ scale: 1, opacity: 1 }}
-                  transition={{
-                    duration: 0.3,
-                    delay: (w * days + d) * 0.002,
-                    ease: "easeOut",
-                  }}
-                  viewport={{ once: true }}
                   className={`w-[10px] h-[10px] md:w-[13px] md:h-[13px] rounded-[2px] ${intensityColors[getIntensityFallback(w, d)]} transition-colors hover:ring-2 hover:ring-gray-300`}
                 />
               ))}
@@ -174,9 +162,12 @@ function ContributionGrid({ contributions }) {
 
 /* ── Focus Card ── */
 function FocusCard({ title, desc, tags, delay = 0 }) {
+  const isMobile = useIsMobile();
+  const blurInitial = isMobile ? "blur(0px)" : "blur(8px)";
+  
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+      initial={{ opacity: 0, y: 30, filter: blurInitial }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.7, ease: "easeOut", delay }}
       viewport={{ once: true, margin: "-10%" }}

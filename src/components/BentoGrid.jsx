@@ -3,9 +3,13 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
 import SectionBackground from "./SectionBackground";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 export default function BentoGrid() {
-  const cardInitial = { opacity: 0, y: 50, scale: 0.95, rotate: -2, filter: "blur(10px)" };
+  const isMobile = useIsMobile();
+  const blurInitial = isMobile ? "blur(0px)" : "blur(10px)";
+  
+  const cardInitial = { opacity: 0, y: 50, scale: 0.95, rotate: -2, filter: blurInitial };
   const cardWhileInView = { opacity: 1, y: 0, scale: 1, rotate: 0, filter: "blur(0px)" };
   const cardTransition = { duration: 0.8, ease: "easeOut" };
   const cardViewport = { once: true, margin: "-10%" };

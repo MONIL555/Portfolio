@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, ChevronDown, Code2, Database, Terminal, Layers, Cpu, Globe, Monitor } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import SectionBackground from "./SectionBackground";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ── Magnetic Wrapper Component ── */
 function MagneticWrapper({ children, className, ...props }) {
@@ -110,7 +111,10 @@ export default function HeroSection() {
   
   const [visibleIndices, setVisibleIndices] = useState([0, 1, 2, 3, 4, 5]);
 
+  const isMobile = useIsMobile();
+
   useEffect(() => {
+    
     const interval = setInterval(() => {
       const indices = [];
       while(indices.length < 6) {
@@ -193,120 +197,121 @@ export default function HeroSection() {
           />
 
           {/* Floating Asymmetrical Badges & Icons */}
-          
-          {/* Left Side */}
-          <motion.div 
-            style={{ y: yBadge1 }}
-            className={`absolute top-[8%] left-[4%] lg:left-[5%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(0) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-            <motion.div animate={floatAnimation(0, -15)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-5 py-2.5 rounded-2xl shadow-sm flex items-center gap-2 transform -rotate-3 scale-90 lg:scale-100">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span className="text-xs font-bold text-gray-800 tracking-wide">Available</span>
+          <div>
+            {/* Left Side */}
+            <motion.div 
+              style={{ y: yBadge1 }}
+              className={`absolute top-[8%] left-[4%] lg:left-[5%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(0) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+              <motion.div animate={isMobile ? undefined : floatAnimation(0, -15)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-5 py-2.5 rounded-2xl shadow-sm flex items-center gap-2 transform -rotate-3 scale-90 lg:scale-100">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-xs font-bold text-gray-800 tracking-wide">Available</span>
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat5 }}
-            className={`absolute top-[28%] left-[12%] lg:left-[18%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(1) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-            <motion.div animate={floatAnimation(0.8, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-3 rounded-2xl shadow-sm text-gray-400 transform rotate-3 scale-75 lg:scale-90">
-              <Monitor className="w-5 h-5" />
+            <motion.div 
+              style={{ y: yFloat5 }}
+              className={`absolute top-[28%] left-[12%] lg:left-[18%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(1) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+              <motion.div animate={isMobile ? undefined : floatAnimation(0.8, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-3 rounded-2xl shadow-sm text-gray-400 transform rotate-3 scale-75 lg:scale-90">
+                <Monitor className="w-5 h-5" />
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat1 }}
-            className={`absolute top-[50%] left-[1%] lg:left-[2%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(2) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-            <motion.div animate={floatAnimation(1.5, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform rotate-6 scale-110 lg:scale-125">
-              <Code2 className="w-6 h-6" />
+            <motion.div 
+              style={{ y: yFloat1 }}
+              className={`absolute top-[50%] left-[1%] lg:left-[2%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(2) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+              <motion.div animate={isMobile ? undefined : floatAnimation(1.5, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform rotate-6 scale-110 lg:scale-125">
+                <Code2 className="w-6 h-6" />
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat7 }}
-            className={`absolute top-[72%] left-[8%] lg:left-[14%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(3) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-             <motion.div animate={floatAnimation(2.2, -25)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-4 py-2 rounded-xl shadow-sm transform -rotate-3 scale-90 lg:scale-110">
-              <span className="text-xs font-bold text-gray-500 tracking-wider font-[family-name:var(--font-space-grotesk)]">React & Next.js</span>
+            <motion.div 
+              style={{ y: yFloat7 }}
+              className={`absolute top-[72%] left-[8%] lg:left-[14%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(3) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+               <motion.div animate={isMobile ? undefined : floatAnimation(2.2, -25)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-4 py-2 rounded-xl shadow-sm transform -rotate-3 scale-90 lg:scale-110">
+                <span className="text-xs font-bold text-gray-500 tracking-wider font-[family-name:var(--font-space-grotesk)]">React & Next.js</span>
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat3 }}
-            className={`absolute bottom-[12%] left-[15%] lg:left-[22%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(4) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-             <motion.div animate={floatAnimation(2, -15)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-4 py-2 rounded-xl shadow-sm transform -rotate-6 scale-75 lg:scale-90">
-              <span className="text-xs font-bold text-gray-500 tracking-wider font-[family-name:var(--font-space-grotesk)]">MERN Stack</span>
+            <motion.div 
+              style={{ y: yFloat3 }}
+              className={`absolute bottom-[12%] left-[15%] lg:left-[22%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(4) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+               <motion.div animate={isMobile ? undefined : floatAnimation(2, -15)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-4 py-2 rounded-xl shadow-sm transform -rotate-6 scale-75 lg:scale-90">
+                <span className="text-xs font-bold text-gray-500 tracking-wider font-[family-name:var(--font-space-grotesk)]">MERN Stack</span>
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat9 }}
-            className={`absolute bottom-[3%] left-[3%] lg:left-[5%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(5) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-            <motion.div animate={floatAnimation(0.3, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-full shadow-sm text-gray-400 transform rotate-12 scale-100 lg:scale-110">
-              <Globe className="w-5 h-5" />
+            <motion.div 
+              style={{ y: yFloat9 }}
+              className={`absolute bottom-[3%] left-[3%] lg:left-[5%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(5) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+              <motion.div animate={isMobile ? undefined : floatAnimation(0.3, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-full shadow-sm text-gray-400 transform rotate-12 scale-100 lg:scale-110">
+                <Globe className="w-5 h-5" />
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          {/* Right Side */}
-          <motion.div 
-            style={{ y: yFloat2 }}
-            className={`absolute top-[6%] right-[3%] lg:right-[4%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(6) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-             <motion.div animate={floatAnimation(0.5, -25)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform rotate-3 scale-110 lg:scale-125">
-              <Terminal className="w-6 h-6" />
+            {/* Right Side */}
+            <motion.div 
+              style={{ y: yFloat2 }}
+              className={`absolute top-[6%] right-[3%] lg:right-[4%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(6) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+               <motion.div animate={isMobile ? undefined : floatAnimation(0.5, -25)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform rotate-3 scale-110 lg:scale-125">
+                <Terminal className="w-6 h-6" />
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat6 }}
-            className={`absolute top-[32%] right-[15%] lg:right-[22%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(7) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-             <motion.div animate={floatAnimation(1.2, -18)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-3 rounded-2xl shadow-sm text-gray-400 transform -rotate-6 scale-75 lg:scale-90">
-              <Layers className="w-5 h-5" />
+            <motion.div 
+              style={{ y: yFloat6 }}
+              className={`absolute top-[32%] right-[15%] lg:right-[22%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(7) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+               <motion.div animate={isMobile ? undefined : floatAnimation(1.2, -18)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-3 rounded-2xl shadow-sm text-gray-400 transform -rotate-6 scale-75 lg:scale-90">
+                <Layers className="w-5 h-5" />
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat4 }}
-            className={`absolute top-[55%] right-[2%] lg:right-[3%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(8) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-            <motion.div animate={floatAnimation(2.5, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform -rotate-6 scale-100 lg:scale-110">
-              <Database className="w-6 h-6" />
+            <motion.div 
+              style={{ y: yFloat4 }}
+              className={`absolute top-[55%] right-[2%] lg:right-[3%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(8) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+              <motion.div animate={isMobile ? undefined : floatAnimation(2.5, -20)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform -rotate-6 scale-100 lg:scale-110">
+                <Database className="w-6 h-6" />
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat8 }}
-            className={`absolute top-[75%] right-[12%] lg:right-[18%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(9) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-            <motion.div animate={floatAnimation(1.8, -22)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform rotate-6 scale-90 lg:scale-100">
-              <Cpu className="w-6 h-6" />
+            <motion.div 
+              style={{ y: yFloat8 }}
+              className={`absolute top-[75%] right-[12%] lg:right-[18%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(9) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+              <motion.div animate={isMobile ? undefined : floatAnimation(1.8, -22)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 p-4 rounded-2xl shadow-sm text-gray-400 transform rotate-6 scale-90 lg:scale-100">
+                <Cpu className="w-6 h-6" />
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yBadge2 }}
-            className={`absolute bottom-[16%] right-[18%] lg:right-[26%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(10) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-            <motion.div animate={floatAnimation(1, -25)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-5 py-2.5 rounded-2xl shadow-sm transform rotate-3 scale-75 lg:scale-90">
-              <span className="text-xs font-bold text-gray-600 tracking-wider uppercase font-[family-name:var(--font-space-grotesk)]">Full-Stack Dev</span>
+            <motion.div 
+              style={{ y: yBadge2 }}
+              className={`absolute bottom-[16%] right-[18%] lg:right-[26%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(10) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+              <motion.div animate={isMobile ? undefined : floatAnimation(1, -25)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-5 py-2.5 rounded-2xl shadow-sm transform rotate-3 scale-75 lg:scale-90">
+                <span className="text-xs font-bold text-gray-600 tracking-wider uppercase font-[family-name:var(--font-space-grotesk)]">Full-Stack Dev</span>
+              </motion.div>
             </motion.div>
-          </motion.div>
 
-          <motion.div 
-            style={{ y: yFloat10 }}
-            className={`absolute bottom-[6%] right-[5%] lg:right-[8%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(11) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
-          >
-             <motion.div animate={floatAnimation(2.8, -15)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-4 py-2 rounded-xl shadow-sm transform -rotate-3 scale-90 lg:scale-110">
-              <span className="text-xs font-bold text-gray-500 tracking-wider font-[family-name:var(--font-space-grotesk)]">UI / UX</span>
+            <motion.div 
+              style={{ y: yFloat10 }}
+              className={`absolute bottom-[6%] right-[5%] lg:right-[8%] z-0 pointer-events-none transition-opacity duration-1000 ${visibleIndices.includes(11) ? 'opacity-50' : 'opacity-0'} md:opacity-80`}
+            >
+               <motion.div animate={isMobile ? undefined : floatAnimation(2.8, -15)} className="glass-panel backdrop-blur-xl bg-white/40 border border-white/60 px-4 py-2 rounded-xl shadow-sm transform -rotate-3 scale-90 lg:scale-110">
+                <span className="text-xs font-bold text-gray-500 tracking-wider font-[family-name:var(--font-space-grotesk)]">UI / UX</span>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
 
           {/* Main Massive Typography */}
           <div className="relative z-10 flex flex-col items-center mix-blend-multiply">

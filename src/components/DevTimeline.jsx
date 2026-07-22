@@ -97,6 +97,7 @@ function useParticles(canvasRef, rootRef) {
 
     function init() {
       resize();
+      if (typeof window !== "undefined" && window.innerWidth < 1024) return;
       // Reduced from 180→80 particles and 90→40 stars
       particles = Array.from({ length: 80 }, () => new Particle(W, H));
       stars = Array.from({ length: 40 }, () => ({
@@ -110,8 +111,8 @@ function useParticles(canvasRef, rootRef) {
     function tick() {
       rafId = requestAnimationFrame(tick);
 
-      // Skip rendering when off-screen
-      if (!isVisible) return;
+      // Skip rendering when off-screen or on mobile
+      if (!isVisible || (typeof window !== "undefined" && window.innerWidth < 1024)) return;
 
       ctx.clearRect(0, 0, W, H);
 

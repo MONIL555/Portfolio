@@ -2,9 +2,12 @@
 import { useState, useRef } from "react";
 import { Mail, Phone, ExternalLink } from "lucide-react";
 import { motion, useScroll, useTransform, useMotionTemplate, useSpring } from "framer-motion";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 function AnimatedEmailCard() {
   const [copied, setCopied] = useState(false);
+  const isMobile = useIsMobile();
+  const blurInitial = isMobile ? "blur(0px)" : "blur(10px)";
 
   const handleCopy = () => {
     navigator.clipboard.writeText("monilsolanki30@gmail.com");
@@ -14,7 +17,7 @@ function AnimatedEmailCard() {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, x: -50, filter: "blur(10px)" }}
+      initial={{ opacity: 0, x: -50, filter: blurInitial }}
       whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       viewport={{ once: true, margin: "-10%" }}
@@ -70,6 +73,8 @@ function AnimatedEmailCard() {
 }
 
 export default function ContactPanel() {
+  const isMobile = useIsMobile();
+  const blurInitial = isMobile ? "blur(0px)" : "blur(10px)";
   return (
     <section id="contact" className="min-h-screen flex flex-col justify-center pt-16 pb-6 px-8 md:px-16 max-w-7xl mx-auto w-full overflow-hidden snap-start">
       <motion.div 
@@ -87,7 +92,7 @@ export default function ContactPanel() {
         <AnimatedEmailCard />
         
         <motion.a 
-          initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+          initial={{ opacity: 0, y: 50, filter: blurInitial }}
           whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
           viewport={{ once: true, margin: "-10%" }}
@@ -123,7 +128,7 @@ export default function ContactPanel() {
         </motion.a>
 
         <motion.div 
-          initial={{ opacity: 0, x: 50, filter: "blur(10px)" }}
+          initial={{ opacity: 0, x: 50, filter: blurInitial }}
           whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
           viewport={{ once: true, margin: "-10%" }}
@@ -166,7 +171,7 @@ export default function ContactPanel() {
 
       {/* Resume Download & Availability Banner */}
       <motion.a 
-        initial={{ opacity: 0, y: 50, filter: "blur(10px)" }}
+        initial={{ opacity: 0, y: 50, filter: blurInitial }}
         whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
         viewport={{ once: true, margin: "-10%" }}
